@@ -1,0 +1,44 @@
+/*наши стили*/
+.product {
+    height: 500px;
+
+}
+.product p.description_product{
+    height: 70px;
+}
+
+#navbar-example .navbar-nav > li::after {
+    content:"";
+}
+
+.sidebar {
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.pure_form {
+    background: white;
+    margin: 10px;
+}
+.pure_form form {
+    padding: 30px;
+}
+
+.pure_form h3 {
+    padding-top: 15px;
+    text-align: center;
+}
+.product h3 {
+    height: 50px;
+    color: rgb(144, 82, 82);
+
+}
+
+input.hidden_style{
+    border: none;
+    background: none;
+    color: #fff;
+}
+
+.product .btn i {
+    font-size: 18px;
+}

@@ -1,0 +1,89 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta name="author"  content="Kamleshyadav"/>
+        <meta name="MobileOptimized" content="320">
+        <!-- main css -->
+        <link rel="stylesheet" href="{% static "helpchina/css/style.css" %}" media="screen"/>
+        <link rel="stylesheet" href="{% static "helpchina/css/bootstrap.css" %}" media="screen"/>
+{#        material#}
+        <link rel="stylesheet" href="{% static "helpchina/material/dist/css/material.css" %}" media="screen"/>
+        <link rel="stylesheet" href="{% static "helpchina/material/dist/css/ripples.css" %}" media="screen"/>
+    
+        <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400italic,400,700,300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        {% block head %}
+            <title>Главная | товары народной медицины helpchina.ru</title>
+            <meta name="description"  content="Магазин товаров народной медецины helpchina.ru. Бобровая струя, медвежий жир и другие товары у нас."/>
+        {% endblock %}
+        {% block page_css %}
+        {% endblock %}
+    </head>
+        <body>
+
+            <div class="container">
+                <div class="row">
+
+                    {% block header %}
+{#                        {% top_menu request %}#}
+                    {% endblock %}
+
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 sidebar">
+                        <h2>Список Категорий</h2>
+                        <ul>
+{#                            {% category request %}#}
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
+                        <div class="row">
+                            {% block content %}
+                            {% endblock %}
+                        </div>
+                    </div>
+
+                    {% block articles %}
+                    {% endblock %}
+
+                    <div class="col-xs-12 col-sm-10 col-md-12 col-lg-12 sidebar">
+                        <div class="row">
+                            {% block footer %}
+                                <div class="col-xs-8 col-sm-12 col-md-6 col-lg-4">
+                                    <h4>Контакты</h4>
+                                    <p>090909</p>
+                                    <p>mail</p>
+                                </div>
+                                <div class="col-xs-8 col-sm-12 col-md-6 col-lg-4">
+                                    <h4>Способы оплаты</h4>
+                                    <a href="/page/oplata"><img height="120px"  src= "{% static "helpchina/images/robokassa2.png" %}" alt=""/></a>
+                                </div>
+                                <div class="col-xs-8 col-xm-12 col-md-6 col-lg-4">
+                                    <h4>Способы доставки</h4>
+                                    <a href="/page/dostavka"><img height="120px"  src= "{% static "helpchina/images/dostavka.png" %}" alt=""/></a>
+                                </div>
+                            {% endblock  %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <script type="text/javascript" src="{% static "helpchina/js/jquery-1.11.1.js" %}"></script>
+        <script type="text/javascript" src="{% static "helpchina/js/jquery-validation-1/dist/jquery.validate.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "helpchina/js/jquery-validation-1/dist/localization/messages_ru.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "helpchina/js/bootstrap.js" %}"></script>
+{#            material#}
+            <script type="text/javascript" src="{% static "helpchina/material/dist/js/material.js" %}"></script>
+            <script type="text/javascript" src="{% static "helpchina/material/dist/js/ripples.js" %}"></script>
+            <script>$('.dropdown-toggle').dropdown();</script>
+            <script>$.material.init()</script>
+
+        {% block page_js %}
+
+        {% endblock %}
+        </body>
+</html>
