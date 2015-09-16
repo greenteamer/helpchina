@@ -292,7 +292,8 @@ var CartItem = React.createClass({displayName: "CartItem",
     render : function(){
         return(
             React.createElement("div", null, 
-                this.props.cartitem.id
+                React.createElement("p", null, this.props.cartitem.id), 
+                React.createElement("p", null, this.props.cartitem.product)
             )
         )
     }

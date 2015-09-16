@@ -5,7 +5,8 @@ var CartItem = React.createClass({
     render : function(){
         return(
             <div>
-                {this.props.cartitem.id}
+                <p>{this.props.cartitem.id}</p>
+                <p>{this.props.cartitem.product}</p>
             </div>
         )
     }
