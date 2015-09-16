@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block head %}
+    {% if product.meta_title != "" %}
+        <title>{{ product.meta_title }} | фрезерное оборудование</title>
+    {% else %}
+        <title>{{ product.name }} | магазин оборудования frezerov.ru</title>
+    {% endif %}
+    {% if product.meta_description != "" %}
+        <meta name="description" content="{{ product.meta_description }}"/>
+    {% else %}
+        <meta name="description" content="{{ product.description|truncatechars:160 }}"/>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+
+
+    <div class="col-md-12">
+        <div class="row">
+            <h1>{{ product.name }}</h1>
+            <img width="200px" src="/media/{{ product.get_image.image }}" alt=""/>
+            <p>{{ product.price }} р</p>
+            <p>{{ product.description }}</p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <form action="" method="post">{% csrf_token %}
+            <input type="hidden" class="product_id" name="id" value="{{ product.id }}"/>
+            <i class="fa fa-chevron-down"></i> Кол-во: <input size="2" class="count" type="text" name="count" value="1" />
+                <button type="submit" class="btn btn-primary ajax-submit">
+                   <i class="mdi-action-add-shopping-cart "></i>
+                    Добавить
+                </button>
+        </form>
+
+    </div>
+
+{% endblock %}
+
+
+

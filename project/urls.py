@@ -1,6 +1,8 @@
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from rest_framework import routers
+from django.conf import settings
+
 
 
 from core.views import ProductViewSet, CartitemsViewSet
@@ -21,3 +23,11 @@ urlpatterns = [
     url(r'^rest-api/', include('rest_framework.urls', namespace='rest_framework'))
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.STATIC_ROOT}),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT}),
+        )
