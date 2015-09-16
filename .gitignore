@@ -23,4 +23,4 @@ get_2gis_filials.py
 media/
 
 #react
-static/node_modules/
+project/static/node_modules/
