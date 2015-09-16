@@ -1,0 +1,63 @@
+{% load sitetree %}
+{#<ul class="nav nav-pills nav-main" id="mainMenu">#}
+{#    {% for item in sitetree_items %}#}
+{#	<li class="dropdown">#}
+{#        <a class="dropdown-toggle" href="{% sitetree_url for item %}" {% if item.hint %}title="{{ item.hint }}"{% endif %} {% if item.is_current or item.in_current_branch %}class="{{ item.is_current|yesno:"current_item ," }}{{ item.in_current_branch|yesno:"current_branch," }}"{% endif %}>{{ item.title_resolved }}</a>#}
+{#		{% if item.has_children %}#}
+{#			{% sitetree_children of item for menu template "sitetree/menu_dropdown.html" %}#}
+{#		{% endif %}#}
+{#	</li>#}
+{#	{% endfor %}#}
+{#</ul>#}
+
+<nav id="navbar-example" class="navbar  navbar-default navbar-static" role="navigation">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse bs-example-js-navbar-collapse">
+          <ul class="nav navbar-nav">
+
+              {% for item in sitetree_items %}
+{#                  <a href="">text</a>#}
+{#                  <p>hello</p>#}
+                <li class="dropdown">
+
+                    {% if item.has_children %}
+                        <a id="drop1" href="{% sitetree_url for item %}" role="button" class="dropdown-toggle" data-toggle="dropdown">{{ item.title_resolved }} <b class="caret"></b></a>
+                        {% sitetree_children of item for menu template "sitetree/menu_dropdown.html" %}
+                    {% else %}
+                        <a href="{% sitetree_url for item %}" role="menuitem" tabindex="-1">{{ item.title_resolved }} </a>
+                    {% endif %}
+{#                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">#}
+{#                        <li role="presentation">#}
+{#                            <a role="menuitem" tabindex="-1" href="http://bootstrap-ru.ru" target="_blank">Действие</a>#}
+{#                        </li>#}
+{#                        <li role="presentation" class="divider"></li>#}
+{#                        <li role="presentation">#}
+{#                            <a role="menuitem" tabindex="-1" href="http://bootstrap-ru.ru" target="_blank">Отдельная ссылка</a>#}
+{#                        </li>#}
+{#                    </ul>#}
+                </li>
+
+              {% endfor %}
+
+          </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li id="fat-menu" class="dropdown">
+                    <a href="#" id="drop3" role="button" class="dropdown-toggle cart_button_dropdown" data-toggle="dropdown">Личный Кабинет<br/><small>{{ user.get_full_name }}</small></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+{#                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/article-add/" target="_blank">Добавить статью</a></li>#}
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/page/dostavka/">Доставка</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/account/" >Мой аккаунт</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/cart/" >Корзина</a></li>
+                        {% if request.user.is_authenticated %}
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout/" >Выйти</a></li>
+                        {% else %}
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/login/" >Войти</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>

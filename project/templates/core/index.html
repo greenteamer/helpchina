@@ -1,5 +1,35 @@
 {% extends "base.html" %}
+{% load header_tags %}
+{% load static from staticfiles %}
+
+{% block swiper %}
+    <div class="swiper-container">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+{#            {% for slide in slides %}#}
+{#                    <td>#}
+{#                        <div class="col-md-4">#}
+{#                            <div class="swiper-slide"><img width="210px" src="/media/{{ slide.image }}" alt=""/></div>#}
+{#                        </div>#}
+{#                    </td>#}
+{#            {% endfor %}#}
+{#            <div class="swiper-slide"><img src="{% static 'kastoreum/images/peizagh.jpg' %}" alt=""/></div>#}
+
+{#            <div class="swiper-slide"><img src="{% static 'kastoreum/images/peizagh.jpg' %}" alt=""/></div>#}
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+{% endblock %}
+
 
 {% block content %}
-    привет
+
+    <div id="products"></div>
+
 {% endblock %}
