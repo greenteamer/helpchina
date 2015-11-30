@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Products = require('./views/AppView.jsx');
 var Product = require('./views/ProductView.jsx');
 var CartItems = require('./views/cart/Cart.jsx');
@@ -30,11 +31,11 @@ var routes = (
 
 // для react-router
 Router.run(routes, Router.HashLocation, function(Route){
-    React.render(<Route/>, document.getElementById('products'));
+    ReactDOM.render(<Route/>, document.getElementById('products'));
 });
 
 
 
 //React.render(<Products />, document.getElementById('products'));
 
-React.render(<CartItems />, document.getElementById('cartitems'));
+ReactDOM.render(<CartItems />, document.getElementById('cartitems'));

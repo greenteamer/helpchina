@@ -8,6 +8,8 @@ from core.cart import cart
 from django.http import HttpResponseRedirect, HttpResponse
 import json
 
+from react_render.django.render import render_component
+
 def add_to_cart(request):
     id = request.POST['id']
     product = Product.objects.get(id=id)

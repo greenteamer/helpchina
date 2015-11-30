@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Actions = require('../actions/Actions.js');
 var Store = require('../store/Store.js');
 var Products = require('./ProductsView.jsx');
