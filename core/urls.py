@@ -15,6 +15,7 @@ urlpatterns = patterns('core.views',
     url(r'^page/(?P<slug>[-\w]+)/$', 'page_view'),
     url(r'^article/(?P<id>[-\w]+)/$', 'article_view'),
     url(r'^addtocart/$', 'addtocart_view'),
+    url(r'^change-count/$', 'change_count_view'),
 )
 #
 # if settings.DEBUG:

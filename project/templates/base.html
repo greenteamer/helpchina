@@ -47,31 +47,16 @@
 {#                        </div>#}
 {#                    </div>#}
 
-
-                    {% block content %}
-                    {% endblock %}
-
-
-                    <div class="col-xs-12 col-sm-10 col-md-12 col-lg-12 sidebar">
-                        <div class="row">
-{#                            {% block footer %}#}
-{#                                это футер#}
-{#                                <div class="col-xs-8 col-sm-12 col-md-6 col-lg-4">#}
-{#                                    <h4>Контакты</h4>#}
-{#                                    <p>090909</p>#}
-{#                                    <p>mail</p>#}
-{#                                </div>#}
-{#                                <div class="col-xs-8 col-sm-12 col-md-6 col-lg-4">#}
-{#                                    <h4>Способы оплаты</h4>#}
-{#                                    <a href="/page/oplata"><img height="120px"  src= "{% static "helpchina/images/robokassa2.png" %}" alt=""/></a>#}
-{#                                </div>#}
-{#                                <div class="col-xs-8 col-xm-12 col-md-6 col-lg-4">#}
-{#                                    <h4>Способы доставки</h4>#}
-{#                                    <a href="/page/dostavka"><img height="120px"  src= "{% static "helpchina/images/dostavka.png" %}" alt=""/></a>#}
-{#                                </div>#}
-{#                            {% endblock  %}#}
-                        </div>
+                    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
+                        {% block content %}
+                        {% endblock %}
                     </div>
+
+                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div id="cartitems"></div>
+                        {% block sidebar %}
+                        {% endblock %}
+                     </div>
                 </div>
             </div>
 

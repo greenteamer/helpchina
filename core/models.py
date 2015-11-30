@@ -57,6 +57,9 @@ class ProductImage(models.Model):
     def __unicode__(self):
         return self.product.name + "-" + self.image.name
 
+    def get_image(self):
+        return "/media/%s/" % self.image
+
     class Meta:
         verbose_name = u'Фото товара'
         verbose_name_plural = u'Фото товара'

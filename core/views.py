@@ -19,12 +19,15 @@ def add_to_cart(request):
         tmp_item = CartItem.objects.get(cart_id=cart_id, product=product)
         tmp_item.count += int(request.POST['count'])
         tmp_item.save()
+        return tmp_item
     except:
         cartItem = CartItem()
         cartItem.product = product
         cartItem.count = request.POST['count']
         cartItem.cart_id = cart_id
         cartItem.save()
+        return cartItem
+
 
 def indexView(request, template_name="core/index.html"):
     products = Product.objects.all()
@@ -85,7 +88,55 @@ class CartitemsViewSet(viewsets.ModelViewSet):
 
 
 def addtocart_view(request):
-    add_to_cart(request)
+    cart_item = add_to_cart(request)
     data = json.dumps({
+        'id': cart_item.id,
+        'product': cart_item.product.id,
+        'count': cart_item.count,
+        'cart_id': cart_item.cart_id
     })
+    return HttpResponse(data, content_type="application/json")
+
+
+def change_count_view(request):
+    count = request.POST["count"]
+    id = request.POST["id"]
+    tmp_item = CartItem.objects.get(id=id)
+    tmp_item.count = count
+    tmp_item.save()
+    data = json.dumps({})
+    return HttpResponse(data, content_type="application/json")
+
+
+def getcartitems(request):
+    cart_id = cart.set_cart_id(request)
+    cartitems = CartItem.objects.filter(cart_id=cart_id)
+
+    list = []
+    for item in cartitems:
+
+        # получаем все фотки продукта картитема
+        images = ProductImage.objects.filter(product=item.product)
+        list_images = []
+        # собираем список объектов изображений этого продукта в удобный для json.dumps
+        for image in images:
+            list_images.append({
+                'image': '%s' % image.get_image()
+            })
+
+        # добавляем в список картитемов объект при каждой итерации
+        list.append({
+            'id': item.id,
+            'product': {
+                'id': item.product.id,
+                'name': item.product.name,
+                'description': item.product.description,
+                'price': item.product.price,
+                "product_images": list_images
+            },
+            'count': item.count,
+            'cart_id': item.cart_id
+        })
+
+    data = json.dumps(list)
     return HttpResponse(data, content_type="application/json")
