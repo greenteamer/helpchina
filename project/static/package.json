@@ -23,7 +23,9 @@
     "merge": "^1.2.0",
     "microevent": "^1.0.0",
     "react": "latest",
-    "react-select": "^0.6.2"
+    "react-router": "^0.13.3",
+    "react-select": "^0.6.2",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "browserify": "latest",
@@ -33,6 +35,6 @@
   "scripts": {
     "prod": "jsx -x jsx ./app/views ./app/views",
     "build-js": "browserify ./client/main.js > ./client/bundle.js",
-    "index-watch": "watchify ./app/main.js -o ./app/bundle.js -v"
+    "index-watch": "watchify ./app/main.jsx -o ./app/bundle.js -v"
   }
 }

@@ -20,6 +20,20 @@ var Actions = {
         Dispatcher.dispatch({
             actionType: 'get-cartitems'
         });
+    },
+    setCount: function(statecount, item){
+        Dispatcher.dispatch({
+            actionType: 'setCount',
+            statecount: statecount,
+            item: item
+        });
+    },
+    getProduct: function(productId){
+        console.log('getProduct action');
+        Dispatcher.dispatch({
+            actionType: 'get-product',
+            productId: productId
+        });
     }
 };
 

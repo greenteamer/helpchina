@@ -40,12 +40,11 @@
               {% endfor %}
 
           </ul>
-
             <ul class="nav navbar-nav navbar-right">
                 <li id="fat-menu" class="dropdown">
                     <a href="#" id="drop3" role="button" class="dropdown-toggle cart_button_dropdown" data-toggle="dropdown">Личный Кабинет<br/><small>{{ user.get_full_name }}</small></a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-{#                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/article-add/" target="_blank">Добавить статью</a></li>#}
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/article-add/" target="_blank">Добавить статью</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="/page/dostavka/">Доставка</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="/account/" >Мой аккаунт</a></li>
                         <li role="presentation" class="divider"></li>

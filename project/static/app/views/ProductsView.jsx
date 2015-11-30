@@ -5,11 +5,11 @@ var Products = React.createClass({
     render: function(){
         var items = this.props.products.map(function(product){
             return(
-                <Product product={product}/>
+                <Product  product={product}/>
             )
         });
         return(
-            <div>{items}</div>
+            <div className="row">{items}</div>
         )
     }
 });

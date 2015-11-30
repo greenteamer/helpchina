@@ -42,3 +42,23 @@ input.hidden_style{
 .product .btn i {
     font-size: 18px;
 }
+
+.cart_item_image {
+    float: left;
+    width: 40%;
+    margin-right: 9px;
+}
+
+.cartitem p.title {
+    font-weight: bold;
+}
+
+.cart ul.dropdown-menu {
+    background-color: #fff;
+    padding: 10px;
+}
+
+.cartitem {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 13px;
+}
