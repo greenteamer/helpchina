@@ -47,7 +47,8 @@ INSTALLED_APPS = (
     'mptt',
     'sitetree',
     'core.cart',
-    'rest_framework'
+    'rest_framework',
+    'django_react'
 )
 
 MIDDLEWARE_CLASSES = (

@@ -43,7 +43,7 @@ var CartItems = React.createClass({
 
         var items = this.state.cartitems.map(function(item){
             return(
-                <CartItem cartitem={item}/>
+                <CartItem cartitem={item} key={item.id}/>
             )
         });
         return(
@@ -53,7 +53,7 @@ var CartItems = React.createClass({
                     <a href="javascript:void(0)" className="btn btn-default">
                         <i className="mdi-action-shopping-cart"></i>
                     </a>
-                    <div class="btn-group">
+                    <div className="btn-group">
                         <a href="bootstrap-elements.html" data-target="#" className="btn btn-default dropdown-toggle" data-toggle="dropdown">
                             Корзина
                             <span className="caret"></span>
