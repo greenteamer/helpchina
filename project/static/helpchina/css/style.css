@@ -62,3 +62,7 @@ input.hidden_style{
     border-bottom: 1px solid #ccc;
     margin-bottom: 13px;
 }
+
+#cartitems .btn-group {
+    width: 100%;
+}

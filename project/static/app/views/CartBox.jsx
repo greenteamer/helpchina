@@ -30,16 +30,27 @@ var CartItemCount = React.createClass({
             });
         }
     },
+    changeCount : function(e){
+        e.preventDefault();
+        var item = this.props.item;
+        var statecount =  e.target.value;
+        Actions.setCount(statecount, item);
+        this.setState({
+            count : statecount
+        });
+
+    },
     render : function(){
         return (
             <div>
                 <button  onClick={this.minusCount} className="btn btn-primary" type="button"> - </button>
-                <input  type="text" value={this.state.count}/>
+                <input onChange={this.changeCount}  type="text" value={this.state.count}/>
                 <button onClick={this.plusCount} className="btn btn-primary" type="button"> + </button>
             </div>
         )
     }
 });
+
 
 var CartBox = React.createClass({
     getInitialState : function(){
@@ -60,31 +71,36 @@ var CartBox = React.createClass({
         });
     },
 
-    clickDelete : function(){
-        var newCartitems = this.state.cartitems;
-        //newCartitems = _.filter(newCartitems, function(item){
-        //    return item.id != this.refs.deletebutton.getDOMNode().attrs("data-id");
-        //});
+    clickDelete : function(e){
+        e.preventDefault();
+        var id = e.target.id;
+        var newCartitems = _.filter(this.state.cartitems, function(item){
+            return item.id != id;
+        });
         this.setState({
             cartitems: newCartitems
         });
-        console.log('clickDelet', this.refs.deletebutton.getDOMNode().getAttribute("data-id"));
     },
 
     render: function(){
         var state_items = this.state.cartitems;
-        var clickDelete = this.clickDelete.bind(this);
+        var self = this;
         var items = _.map(state_items, function(item){
             var price = item.count*item.product.price;
             return (
-                <tr>
+                <tr key={item.id}>
                     <td>{item.id}</td>
                     <td>{item.product.name}</td>
                     <td><CartItemCount  item={item}/></td>
                     <td>{item.product.price}</td>
                     <td>{price}</td>
                     <td>
-                        <button data-id={item.id} ref="deletebutton" onClick={clickDelete} className="btn btn-primary">Удалить</button>
+                        <button
+                            data-id={item.id}
+                            id={item.id}
+                            ref="deletebutton"
+                            onClick={self.clickDelete}
+                            className="btn btn-primary">Удалить</button>
                     </td>
                 </tr>
             );
@@ -98,7 +114,7 @@ var CartBox = React.createClass({
                   <table className="table table-bordered">
                     <thead>
                       <tr>
-                        <th>2</th>
+                        <th>№</th>
                         <th>Название товара</th>
                         <th>Количество</th>
                         <th>Цена</th>
