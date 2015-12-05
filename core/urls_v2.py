@@ -7,4 +7,7 @@ from django.conf import settings
 urlpatterns = patterns('core.views',
 
     url(r'^get-user-cartitems/$', 'getcartitems'),
+    url(r'^delete-cartitem/$', 'deletecartitem'),
+    url(r'^submit-order/$', 'submitorder')
+
 )

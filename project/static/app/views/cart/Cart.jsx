@@ -25,6 +25,7 @@ var CartItems = React.createClass({
         }
     },
     componentWillMount:function(){
+        console.log('test +');
         Actions.getCartitems();
         Store.bind('cartitemsChange', this.getCaritems);
     },
@@ -33,19 +34,20 @@ var CartItems = React.createClass({
     },
     getCaritems: function(){
         console.log('getCartitems');
-        console.log(Store.cartitems);
+        console.log('getCartItem func', Store.cartitems);
         this.setState({
             cartitems: Store.cartitems
         });
     },
     render: function(){
-        console.log();
+        console.log('test render cartitems', this.state.cartitems);
 
         var items = this.state.cartitems.map(function(item){
             return(
                 <CartItem cartitem={item} key={item.id}/>
             )
         });
+        console.log('items : ', items);
         return(
             <div className="cart">
 
@@ -61,6 +63,9 @@ var CartItems = React.createClass({
                         <ul className="dropdown-menu">
                             {items}
                         </ul>
+                        <a href="/#/cart" className="btn btn-primary btn-sm">
+                            В корзину
+                        </a>
                     </div>
                 </div>
 

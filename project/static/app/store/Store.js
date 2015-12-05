@@ -115,6 +115,22 @@ Dispatcher.register(function (payload){
             //    console.log('ajax-submit');
             //})
             break;
+
+        case 'deleteCartitem':
+            var csrftoken = Cookies.get('csrftoken');
+            $.ajax({
+                url: '/api/v2/delete-cartitem/',
+                type: 'POST',
+                data: {
+                    id: payload.id,
+                    csrfmiddlewaretoken: csrftoken
+                },
+                success: function(response) {
+                    alert('успех');
+                }
+            });
+            break;
+
         case 'setCount':
             var csrftoken = Cookies.get('csrftoken');
             //payload.item
@@ -135,6 +151,23 @@ Dispatcher.register(function (payload){
             ).success(function(data){
                     console.log('success');
             });
+            break;
+
+        case 'submitOrder':
+            //console.log(alertify);
+            var csrftoken = Cookies.get('csrftoken');
+            $.post(
+                '/api/v2/submit-order/',
+                {
+                    csrfmiddlewaretoken: csrftoken,
+                    email: payload.email,
+                    name: payload.name,
+                    phone: payload.phone
+                }
+            ).success(function(data){
+                    console.log('success');
+                    alertify.alert("Cпасибо за заказ");
+                });
             break;
     }
     return true;

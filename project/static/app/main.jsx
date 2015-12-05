@@ -4,6 +4,8 @@ var Products = require('./views/AppView.jsx');
 var Product = require('./views/ProductView.jsx');
 var CartItems = require('./views/cart/Cart.jsx');
 var CartBox = require('./views/CartBox.jsx');
+var Confirm = require('./views/order/Confirm.jsx');
+var Account = require('./views/Account/Account.jsx');
 
 var ReactRouter = require('react-router');
 var Router = ReactRouter;
@@ -26,6 +28,8 @@ var routes = (
         <Route path="/" handler={Products} />
         <Route path="/cart" handler={CartBox} />
         <Route path="/product/:productId" handler={Product} />
+        <Route path="/confirm" handler={Confirm} />
+        <Route path="/account" handler={Account}/>
     </Route>
 );
 
