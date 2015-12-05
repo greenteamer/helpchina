@@ -47,8 +47,7 @@ INSTALLED_APPS = (
     'mptt',
     'sitetree',
     'core.cart',
-    'rest_framework',
-    'django_react'
+    'rest_framework'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,6 +60,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    )
+}
 
 ROOT_URLCONF = 'project.urls'
 
