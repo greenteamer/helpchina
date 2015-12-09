@@ -5,15 +5,33 @@ from rest_framework import viewsets
 from core.serializers import ProductSerializer, CartitemsSerializer
 from core.cart.models import CartItem
 from core.cart import cart
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect, HttpResponse
+from project.settings_local import ADMIN_EMAIL
 import json
 
-from react_render.django.render import render_component
+from django.contrib.auth.models import User
+import random
+# from django.contrib.auth import
+
+from rest_framework.permissions import IsAuthenticated
+
+def create_user(username):
+    user = User()
+    user.username = username
+    password = ''
+    characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
+    for a in range(7):
+        password += characters[random.randint(0, len(characters)-1)]
+
+    user.set_password(password)
+    user.save()
+    return user
 
 def add_to_cart(request):
     id = request.POST['id']
     product = Product.objects.get(id=id)
-    cart_id = cart.set_cart_id(request)
+    cart_id = cart.get_cart_id(request)
     # parametr_price = request.POST['parametr_price']
     # parametr = ProductParametr.objects.get(product=product, price=parametr_price)
 
@@ -87,6 +105,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 class CartitemsViewSet(viewsets.ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartitemsSerializer
+    permission_classes = [IsAuthenticated]
 
 
 def addtocart_view(request):
@@ -111,7 +130,7 @@ def change_count_view(request):
 
 
 def getcartitems(request):
-    cart_id = cart.set_cart_id(request)
+    cart_id = cart.get_cart_id(request)
     cartitems = CartItem.objects.filter(cart_id=cart_id)
 
     list = []
@@ -141,4 +160,44 @@ def getcartitems(request):
         })
 
     data = json.dumps(list)
+    return HttpResponse(data, content_type="application/json")
+
+
+def deletecartitem(request):
+
+    id = request.POST['id']
+    cartitem = CartItem.objects.get(id=id)
+    cartitem.delete()
+
+    data = json.dumps({})
+    return HttpResponse(data, content_type="application/json")
+
+
+def submitorder(request):
+
+    if request.method == 'POST':
+
+        email = request.POST['email']
+        name = request.POST['name']
+        phone = request.POST['phone']
+
+        username = email.split('@')[0]
+        new_user = create_user(username)
+
+        cart_id = cart.get_cart_id(request)
+        cart_items = CartItem.objects.filter(cart_id=cart_id)
+        cart_items_text = ''
+        for item in cart_items:
+            cart_items_text += item.product.name
+
+        subject = u'заявка от %s' % name
+        message = u'Имя: %s \n телефон: %s\n email: %s \n продукты: %s' % (name, phone, email, cart_items_text)
+        send_mail(subject, message, 'halturin77@gmail.com', [ADMIN_EMAIL], fail_silently=False)
+
+        subject = u'заявка от %s' % name
+        message = u'С уважением компания Рокит'
+        send_mail(subject, message, 'halturin77@gmail.com', [email], fail_silently=False)
+
+
+    data = json.dumps({})
     return HttpResponse(data, content_type="application/json")

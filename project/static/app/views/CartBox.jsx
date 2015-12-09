@@ -74,6 +74,7 @@ var CartBox = React.createClass({
     clickDelete : function(e){
         e.preventDefault();
         var id = e.target.id;
+        Actions.deleteCartitem(id);
         var newCartitems = _.filter(this.state.cartitems, function(item){
             return item.id != id;
         });
@@ -81,6 +82,7 @@ var CartBox = React.createClass({
             cartitems: newCartitems
         });
     },
+
 
     render: function(){
         var state_items = this.state.cartitems;
@@ -100,7 +102,7 @@ var CartBox = React.createClass({
                             id={item.id}
                             ref="deletebutton"
                             onClick={self.clickDelete}
-                            className="btn btn-primary">Удалить</button>
+                            className="btn btn-primary btn-sm">Удалить</button>
                     </td>
                 </tr>
             );
@@ -127,6 +129,9 @@ var CartBox = React.createClass({
                     </tbody>
                   </table>
                 </div>
+                 <a href="/#/confirm" className="btn btn-primary btn-sm">
+                        Оформить заказ
+                 </a>
             </div>
         )
     }

@@ -15,6 +15,14 @@ var Actions = {
             id: id
         });
     },
+    deleteCartitem : function(id){
+        console.log('удаляю ',id);
+        Dispatcher.dispatch({
+            actionType: 'deleteCartitem',
+            id: id
+        });
+    },
+
     getCartitems: function (){
         console.log('getCartitems action');
         Dispatcher.dispatch({
@@ -34,6 +42,15 @@ var Actions = {
             actionType: 'get-product',
             productId: productId
         });
+    },
+    submitOrder: function(email, name, phone){
+        console.log("submitOrder");
+        Dispatcher.dispatch({
+            actionType: 'submitOrder',
+            email: email,
+            name: name,
+            phone: phone
+        })
     }
 };
 

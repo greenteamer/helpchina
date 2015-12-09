@@ -1,5 +1,7 @@
 var React = require('react');
 var Actions = require('../actions/Actions.js');
+
+
 var AddToCart = React.createClass({
     getInitialState: function(){
         return {
@@ -28,6 +30,7 @@ var AddToCart = React.createClass({
         });
     },
     addtocart : function(){
+        console.log('добавляем в корзина ');
         Actions.addtocart(this.state.count, this.props.product_id);
     },
     render : function(){

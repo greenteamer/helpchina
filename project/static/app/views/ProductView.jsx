@@ -1,7 +1,7 @@
 var React = require('react');
 var Actions = require('../actions/Actions.js');
 var Store = require('../store/Store.js');
-var AddToCart = require('./AddToCart.jsx');
+var AddToCart = require('./Addtocart.jsx');
 
 var Product = React.createClass({
     getInitialState: function () {
