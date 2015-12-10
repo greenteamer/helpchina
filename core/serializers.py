@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 from rest_framework import serializers
 from core.models import Product, ProductImage
 from core.cart.models import CartItem
+import json
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -21,3 +23,34 @@ class CartitemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ('id', 'product', 'count', 'cart_id')
+
+
+def serializeCartItems(cartitems):
+    list = []
+    print cartitems
+    for item in cartitems:
+        # получаем все фотки продукта картитема
+        images = ProductImage.objects.filter(product=item.product)
+        list_images = []
+        # собираем список объектов изображений
+        # этого продукта в удобный для json.dumps
+        for image in images:
+            list_images.append({
+                'image': '%s' % image.get_image()
+            })
+        # добавляем в список картитемов объект при каждой итерации
+        list.append({
+            'id': item.id,
+            'product': {
+                'id': item.product.id,
+                'name': item.product.name,
+                'description': item.product.description,
+                'price': item.product.price,
+                "product_images": list_images
+            },
+            'count': item.count,
+            'cart_id': item.cart_id
+        })
+
+    data = json.dumps(list)
+    return data

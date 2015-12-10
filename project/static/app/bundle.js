@@ -17,7 +17,7 @@ var Actions = {
         });
     },
     deleteCartitem : function(id){
-        console.log('удаляю ',id);
+        // console.log('удаляю ',id);
         Dispatcher.dispatch({
             actionType: 'deleteCartitem',
             id: id
@@ -190,6 +190,7 @@ Dispatcher.register(function (payload){
                 dataType: 'json',
                 cache: false,
                 success: (function(data){
+                    console.log('Store get-cartitems data: ', data);
                     Store.cartitems = data;
                     Store.cartitemsChange();
                 }).bind(this),
@@ -202,7 +203,7 @@ Dispatcher.register(function (payload){
         //добавляем товар в корзину
         case 'addtocart':
             //отправить POST запрос
-            console.log('addtocart');
+            console.log('addtocart with data: ', payload);
             var csrftoken = Cookies.get('csrftoken');
             $.post(
                 '/addtocart/',
@@ -211,17 +212,21 @@ Dispatcher.register(function (payload){
                     id : payload.id,
                     count : payload.count
                 }
-            ).success(function(data){
+            ).success(function(data){                
+                data = data[0];
                 console.log('Store addtocart cartitem: ', data);
-
                 var exist_item = _.find(Store.cartitems, function(item){
                     // если выполняется условие ниже то возвратим текущий item в exist_item
                     return (item.id == data.id && item.cart_id == data.cart_id);
                 });
+
                 if (exist_item){
+                    console.log('exist_item true: ', exist_item);
                     exist_item.count = data.count;
                 } else {
+                    console.log('Store.cartitems befor: ', Store.cartitems);                    
                     Store.cartitems.push(data);
+                    console.log('Store.cartitems after: ', Store.cartitems);
                 }
 
                 Store.cartitemsChange();
@@ -245,7 +250,8 @@ Dispatcher.register(function (payload){
                     csrfmiddlewaretoken: csrftoken
                 },
                 success: function(response) {
-                    alert('успех');
+                    // alert('успех');
+                    console.log('success delete cartitem data: ', response);
                 }
             });
             break;
@@ -483,6 +489,7 @@ var CartBox = React.createClass({displayName: "CartBox",
         Store.unbind('cartitemsChange', this.getCartitems);
     },
     getCartitems : function(){
+        console.log('getCartitems fun component : ', Store.cartitems);
         this.setState({
             cartitems: Store.cartitems
         });
@@ -502,8 +509,10 @@ var CartBox = React.createClass({displayName: "CartBox",
 
 
     render: function(){
+        console.log('render component befor after: ', this.state.cartitems);
         var state_items = this.state.cartitems;
         var self = this;
+        console.log('render component befor after: ', this.state.cartitems);
         var items = _.map(state_items, function(item){
             var price = item.count*item.product.price;
             return (
@@ -652,6 +661,7 @@ var Actions = require('../../actions/Actions.js');
 var CartItem = React.createClass({displayName: "CartItem",
     render : function(){
         var link = "/#/product/" + this.props.cartitem.product.id;
+        
         return(
             React.createElement("div", {className: "cartitem"}, 
                 React.createElement("img", {className: "cart_item_image", src: this.props.cartitem.product.product_images[0].image}), 
@@ -678,8 +688,7 @@ var CartItems = React.createClass({displayName: "CartItems",
     componentWillUnmount:function(){
         Store.unbind('cartitemsChange', this.getCaritems);
     },
-    getCaritems: function(){
-        console.log('getCartitems');
+    getCaritems: function(){        
         console.log('getCartItem func', Store.cartitems);
         this.setState({
             cartitems: Store.cartitems
