@@ -11,6 +11,7 @@ from project.settings_local import ADMIN_EMAIL
 import json
 
 from django.contrib.auth.models import User
+from django.contrib.auth import login
 import random
 # from django.contrib.auth import
 
@@ -152,8 +153,14 @@ def submitorder(request):
         name = request.POST['name']
         phone = request.POST['phone']
 
-        username = email.split('@')[0]
-        new_user = create_user(username)
+        try:
+            user = User.objects.get(email=email)
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(request, user)
+
+        except:
+            username = email.split('@')[0]
+            new_user = create_user(username)
 
         cart_id = cart.get_cart_id(request)
         cart_items = CartItem.objects.filter(cart_id=cart_id)

@@ -1,7 +1,8 @@
 var React = require('react');
-var Actions = require('../actions/Actions.js');
-var Store = require('../store/Store.js');
+var Actions = require('../../actions/Actions.js');
+var Store = require('../../store/Store.js');
 var _ = require('underscore');
+var Confirm = require('../order/Confirm.jsx');
 
 
 var CartItemCount = React.createClass({
@@ -43,7 +44,7 @@ var CartItemCount = React.createClass({
     render : function(){
         return (
             <div>
-                <button  onClick={this.minusCount} className="btn btn-primary" type="button"> - </button>
+                <button onClick={this.minusCount} className="btn btn-primary" type="button"> - </button>
                 <input onChange={this.changeCount}  type="text" value={this.state.count}/>
                 <button onClick={this.plusCount} className="btn btn-primary" type="button"> + </button>
             </div>
@@ -52,7 +53,7 @@ var CartItemCount = React.createClass({
 });
 
 
-var CartBox = React.createClass({
+var CartPage = React.createClass({
     getInitialState : function(){
         return {
             cartitems: []
@@ -135,9 +136,10 @@ var CartBox = React.createClass({
                  <a href="/#/confirm" className="btn btn-primary btn-sm">
                         Оформить заказ
                  </a>
+                <Confirm/>
             </div>
         )
     }
 });
 
-module.exports = CartBox;
+module.exports = CartPage;
