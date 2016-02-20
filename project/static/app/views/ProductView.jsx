@@ -3,6 +3,8 @@ var Actions = require('../actions/Actions.js');
 var Store = require('../store/Store.js');
 var AddToCart = require('./Addtocart.jsx');
 
+var Link = require('react-router').Link;
+
 var Product = React.createClass({
     getInitialState: function () {
         return {
@@ -34,14 +36,14 @@ var Product = React.createClass({
         //console.log('this.props.params.productId: ', this.props.params.productId);
         if (this.state.product.description) {
             var description = this.state.product.description.slice(0,100);
-            var slug = "/#/product/"+this.state.product.id;
+            var slug = "/product/"+this.state.product.id;
             return(
                 <div className="col-md-4 product">
                     <a href={slug}><img width="100%" src={this.state.product.product_images[0].image} alt=""/></a>
                     <h3>{ this.state.product.name }</h3>
                     <p className="description_product">{ description }</p>
                     <p>
-                        <a className="" href={slug}>подробнее о товаре</a>
+                        <Link to={slug}>подробнее о товаре</Link>
                     </p>
                     <p>
                         <i className="fa fa-chevron-down"></i>

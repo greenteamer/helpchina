@@ -27,7 +27,7 @@
     "react": "latest",
     "react-dom": "^0.14.3",
     "react-render-service": "^0.12.2",
-    "react-router": "^0.13.3",
+    "react-router": "^2.0.0",
     "react-select": "^0.6.2",
     "underscore": "^1.8.3"
   },
