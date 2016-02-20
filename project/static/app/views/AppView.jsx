@@ -3,7 +3,7 @@ var ReactDOM = require('react-dom');
 var Actions = require('../actions/Actions.js');
 var Store = require('../store/Store.js');
 var Products = require('./ProductsView.jsx');
-var CartItems = require('./cart/Cart.jsx');
+var CartItems = require('./cart/CartBar.jsx');
 
 var App = React.createClass({
     getInitialState: function () {

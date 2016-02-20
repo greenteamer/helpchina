@@ -2,7 +2,7 @@
 from core.models import Product, Page, ProductImage, Article, ArticleImage, Catalog
 from django.shortcuts import render, render_to_response, RequestContext
 from rest_framework import viewsets
-from core.serializers import ProductSerializer, CartitemsSerializer
+from core.serializers import *
 from core.cart.models import CartItem
 from core.cart import cart
 from django.core.mail import send_mail
@@ -11,6 +11,7 @@ from project.settings_local import ADMIN_EMAIL
 import json
 
 from django.contrib.auth.models import User
+from django.contrib.auth import login
 import random
 # from django.contrib.auth import
 
@@ -108,17 +109,6 @@ class CartitemsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-def addtocart_view(request):
-    cart_item = add_to_cart(request)
-    data = json.dumps({
-        'id': cart_item.id,
-        'product': cart_item.product.id,
-        'count': cart_item.count,
-        'cart_id': cart_item.cart_id
-    })
-    return HttpResponse(data, content_type="application/json")
-
-
 def change_count_view(request):
     count = request.POST["count"]
     id = request.POST["id"]
@@ -129,37 +119,19 @@ def change_count_view(request):
     return HttpResponse(data, content_type="application/json")
 
 
+def addtocart_view(request):
+    # data = json.dumps({})
+    cart_item = add_to_cart(request)
+    cart_items = []
+    cart_items.append(cart_item)
+    data = serializeCartItems(cart_items)
+    return HttpResponse(data, content_type="application/json")
+
+
 def getcartitems(request):
     cart_id = cart.get_cart_id(request)
     cartitems = CartItem.objects.filter(cart_id=cart_id)
-
-    list = []
-    for item in cartitems:
-
-        # получаем все фотки продукта картитема
-        images = ProductImage.objects.filter(product=item.product)
-        list_images = []
-        # собираем список объектов изображений этого продукта в удобный для json.dumps
-        for image in images:
-            list_images.append({
-                'image': '%s' % image.get_image()
-            })
-
-        # добавляем в список картитемов объект при каждой итерации
-        list.append({
-            'id': item.id,
-            'product': {
-                'id': item.product.id,
-                'name': item.product.name,
-                'description': item.product.description,
-                'price': item.product.price,
-                "product_images": list_images
-            },
-            'count': item.count,
-            'cart_id': item.cart_id
-        })
-
-    data = json.dumps(list)
+    data = serializeCartItems(cartitems)
     return HttpResponse(data, content_type="application/json")
 
 
@@ -181,8 +153,14 @@ def submitorder(request):
         name = request.POST['name']
         phone = request.POST['phone']
 
-        username = email.split('@')[0]
-        new_user = create_user(username)
+        try:
+            user = User.objects.get(email=email)
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(request, user)
+
+        except:
+            username = email.split('@')[0]
+            new_user = create_user(username)
 
         cart_id = cart.get_cart_id(request)
         cart_items = CartItem.objects.filter(cart_id=cart_id)

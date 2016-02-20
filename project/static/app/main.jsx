@@ -2,8 +2,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Products = require('./views/AppView.jsx');
 var Product = require('./views/ProductView.jsx');
-var CartItems = require('./views/cart/Cart.jsx');
-var CartBox = require('./views/CartBox.jsx');
+var CartItems = require('./views/cart/CartBar.jsx');
+var CartBox = require('./views/cart/CartPage.jsx');
 var Confirm = require('./views/order/Confirm.jsx');
 var Account = require('./views/Account/Account.jsx');
 

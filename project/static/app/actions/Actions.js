@@ -16,7 +16,7 @@ var Actions = {
         });
     },
     deleteCartitem : function(id){
-        console.log('удаляю ',id);
+        // console.log('удаляю ',id);
         Dispatcher.dispatch({
             actionType: 'deleteCartitem',
             id: id

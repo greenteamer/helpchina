@@ -6,6 +6,7 @@ var Actions = require('../../actions/Actions.js');
 var CartItem = React.createClass({
     render : function(){
         var link = "/#/product/" + this.props.cartitem.product.id;
+        
         return(
             <div className="cartitem">
                 <img className="cart_item_image" src={this.props.cartitem.product.product_images[0].image}/>
@@ -32,8 +33,7 @@ var CartItems = React.createClass({
     componentWillUnmount:function(){
         Store.unbind('cartitemsChange', this.getCaritems);
     },
-    getCaritems: function(){
-        console.log('getCartitems');
+    getCaritems: function(){        
         console.log('getCartItem func', Store.cartitems);
         this.setState({
             cartitems: Store.cartitems
