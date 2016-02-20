@@ -2,11 +2,13 @@ var React = require('react');
 var Store = require('../../store/Store.js');
 var Actions = require('../../actions/Actions.js');
 
+var Link = require('react-router').Link;
+
 
 var CartItem = React.createClass({
     render : function(){
-        var link = "/#/product/" + this.props.cartitem.product.id;
-        
+        var link = "/product/" + this.props.cartitem.product.id;
+
         return(
             <div className="cartitem">
                 <img className="cart_item_image" src={this.props.cartitem.product.product_images[0].image}/>
@@ -33,7 +35,7 @@ var CartItems = React.createClass({
     componentWillUnmount:function(){
         Store.unbind('cartitemsChange', this.getCaritems);
     },
-    getCaritems: function(){        
+    getCaritems: function(){
         console.log('getCartItem func', Store.cartitems);
         this.setState({
             cartitems: Store.cartitems
@@ -63,7 +65,7 @@ var CartItems = React.createClass({
                         <ul className="dropdown-menu">
                             {items}
                         </ul>
-                        <a href="/#/cart" className="btn btn-primary btn-sm">
+                        <a href="/cart" className="btn btn-primary btn-sm">
                             В корзину
                         </a>
                     </div>

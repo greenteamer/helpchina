@@ -44,7 +44,7 @@ var CartItemCount = React.createClass({
     render : function(){
         return (
             <div>
-                <button  onClick={this.minusCount} className="btn btn-primary" type="button"> - </button>
+                <button onClick={this.minusCount} className="btn btn-primary" type="button"> - </button>
                 <input onChange={this.changeCount}  type="text" value={this.state.count}/>
                 <button onClick={this.plusCount} className="btn btn-primary" type="button"> + </button>
             </div>

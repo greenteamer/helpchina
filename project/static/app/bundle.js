@@ -71,7 +71,16 @@ module.exports = MyDispatcher;
 
 },{}],4:[function(require,module,exports){
 var React = require('react');
-var ReactDOM = require('react-dom');
+var render = require('react-dom').render;
+
+var Router = require('react-router').Router;
+var Route = require('react-router').Route;
+var Link = require('react-router').Link;
+var IndexLink = require('react-router').IndexLink;
+
+var browserHistory = require('react-router').browserHistory;
+
+
 var Products = require('./views/AppView.jsx');
 var Product = require('./views/ProductView.jsx');
 var CartItems = require('./views/cart/CartBar.jsx');
@@ -79,42 +88,72 @@ var CartBox = require('./views/cart/CartPage.jsx');
 var Confirm = require('./views/order/Confirm.jsx');
 var Account = require('./views/Account/Account.jsx');
 
-var ReactRouter = require('react-router');
-var Router = ReactRouter;
-var Route = ReactRouter.Route;
-var RouteHandler = ReactRouter.RouteHandler;
 
-
-var App = React.createClass({displayName: "App",
-  render: function() {
-      return (
-          React.createElement("div", null, 
-            React.createElement(RouteHandler, null)
-          )
-      );
+const App = React.createClass({displayName: "App",
+  render() {
+    return (
+      React.createElement("div", null, 
+        React.createElement("h1", null, "App"), 
+        React.createElement("ul", null, 
+          React.createElement("li", null, React.createElement(Link, {to: "/cart"}, "cart")), 
+          React.createElement("li", null, React.createElement(IndexLink, {to: "/"}, "Home"))
+        ), 
+        this.props.children || React.createElement(Products, null)
+      )
+    )
   }
-});
+})
+
+const About = React.createClass({displayName: "About",
+  render() {
+    return React.createElement("h3", null, "About")
+  }
+})
+
+const Inbox = React.createClass({displayName: "Inbox",
+  render() {
+    return (
+      React.createElement("div", null, 
+        React.createElement("h2", null, "Inbox"), 
+        this.props.children || "Welcome to your Inbox"
+      )
+    )
+  }
+})
+
+const Message = React.createClass({displayName: "Message",
+  render() {
+    return React.createElement("h3", null, "Message ", this.props.params.id)
+  }
+})
+
+
+// routes = (
+//     <Route path="/" component={App}>
+//       <Route path="about" component={About} />
+//       <Route path="inbox" component={Inbox}>
+//         <Route path="messages/:id" component={Message} />
+//       </Route>
+//     </Route>
+// )
 
 var routes = (
-    React.createElement(Route, {path: "/", handler: App}, 
-        React.createElement(Route, {path: "/", handler: Products}), 
-        React.createElement(Route, {path: "/cart", handler: CartBox}), 
-        React.createElement(Route, {path: "/product/:productId", handler: Product}), 
-        React.createElement(Route, {path: "/confirm", handler: Confirm}), 
-        React.createElement(Route, {path: "/account", handler: Account})
-    )
+  React.createElement(Route, {path: "/", component: App}, 
+    React.createElement(Route, {path: "/", component: Products}), 
+    React.createElement(Route, {path: "cart", component: CartBox}), 
+    React.createElement(Route, {path: "product/:productId", component: Product}), 
+    React.createElement(Route, {path: "confirm", component: Confirm}), 
+    React.createElement(Route, {path: "account", component: Account})
+  )
 );
 
-// для react-router
-Router.run(routes, Router.HashLocation, function(Route){
-    ReactDOM.render(React.createElement(Route, null), document.getElementById('products'));
-});
+
+render(
+  React.createElement(Router, {history: browserHistory, routes: routes})
+, document.getElementById('products'))
 
 
-
-//React.render(<Products />, document.getElementById('products'));
-
-ReactDOM.render(React.createElement(CartItems, null), document.getElementById('cartitems'));
+render(React.createElement(CartItems, null), document.getElementById('cartitems'));
 
 },{"./views/Account/Account.jsx":6,"./views/AppView.jsx":8,"./views/ProductView.jsx":9,"./views/cart/CartBar.jsx":11,"./views/cart/CartPage.jsx":12,"./views/order/Confirm.jsx":13,"react":235,"react-dom":22,"react-router":50}],5:[function(require,module,exports){
 var Dispatcher = require('../dispatcher/Dispatcher.js');
@@ -426,6 +465,8 @@ var Actions = require('../actions/Actions.js');
 var Store = require('../store/Store.js');
 var AddToCart = require('./Addtocart.jsx');
 
+var Link = require('react-router').Link;
+
 var Product = React.createClass({displayName: "Product",
     getInitialState: function () {
         return {
@@ -457,14 +498,14 @@ var Product = React.createClass({displayName: "Product",
         //console.log('this.props.params.productId: ', this.props.params.productId);
         if (this.state.product.description) {
             var description = this.state.product.description.slice(0,100);
-            var slug = "/#/product/"+this.state.product.id;
+            var slug = "/product/"+this.state.product.id;
             return(
                 React.createElement("div", {className: "col-md-4 product"}, 
                     React.createElement("a", {href: slug}, React.createElement("img", {width: "100%", src: this.state.product.product_images[0].image, alt: ""})), 
                     React.createElement("h3", null,  this.state.product.name), 
                     React.createElement("p", {className: "description_product"},  description ), 
                     React.createElement("p", null, 
-                        React.createElement("a", {className: "", href: slug}, "подробнее о товаре")
+                        React.createElement(Link, {to: slug}, "подробнее о товаре")
                     ), 
                     React.createElement("p", null, 
                         React.createElement("i", {className: "fa fa-chevron-down"}), 
@@ -488,7 +529,7 @@ var Product = React.createClass({displayName: "Product",
 
 module.exports = Product;
 
-},{"../actions/Actions.js":1,"../store/Store.js":5,"./Addtocart.jsx":7,"react":235}],10:[function(require,module,exports){
+},{"../actions/Actions.js":1,"../store/Store.js":5,"./Addtocart.jsx":7,"react":235,"react-router":50}],10:[function(require,module,exports){
 var React = require('react');
 var Product =  require('./ProductView.jsx');
 
@@ -512,11 +553,13 @@ var React = require('react');
 var Store = require('../../store/Store.js');
 var Actions = require('../../actions/Actions.js');
 
+var Link = require('react-router').Link;
+
 
 var CartItem = React.createClass({displayName: "CartItem",
     render : function(){
-        var link = "/#/product/" + this.props.cartitem.product.id;
-        
+        var link = "/product/" + this.props.cartitem.product.id;
+
         return(
             React.createElement("div", {className: "cartitem"}, 
                 React.createElement("img", {className: "cart_item_image", src: this.props.cartitem.product.product_images[0].image}), 
@@ -543,7 +586,7 @@ var CartItems = React.createClass({displayName: "CartItems",
     componentWillUnmount:function(){
         Store.unbind('cartitemsChange', this.getCaritems);
     },
-    getCaritems: function(){        
+    getCaritems: function(){
         console.log('getCartItem func', Store.cartitems);
         this.setState({
             cartitems: Store.cartitems
@@ -573,7 +616,7 @@ var CartItems = React.createClass({displayName: "CartItems",
                         React.createElement("ul", {className: "dropdown-menu"}, 
                             items
                         ), 
-                        React.createElement("a", {href: "/#/cart", className: "btn btn-primary btn-sm"}, 
+                        React.createElement("a", {href: "/cart", className: "btn btn-primary btn-sm"}, 
                             "В корзину"
                         )
                     )
@@ -588,7 +631,7 @@ var CartItems = React.createClass({displayName: "CartItems",
 
 module.exports = CartItems;
 
-},{"../../actions/Actions.js":1,"../../store/Store.js":5,"react":235}],12:[function(require,module,exports){
+},{"../../actions/Actions.js":1,"../../store/Store.js":5,"react":235,"react-router":50}],12:[function(require,module,exports){
 var React = require('react');
 var Actions = require('../../actions/Actions.js');
 var Store = require('../../store/Store.js');
