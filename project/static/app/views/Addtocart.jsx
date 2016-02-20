@@ -30,7 +30,7 @@ var AddToCart = React.createClass({
         });
     },
     addtocart : function(){
-        console.log('добавляем в корзина ');
+        // console.log('добавляем в корзина ');
         Actions.addtocart(this.state.count, this.props.product_id);
     },
     render : function(){

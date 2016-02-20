@@ -97,18 +97,6 @@ def article_view(request, id, template_name="core/article.html"):
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 
 
-# ViewSets define the view behavior.
-class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-
-class CartitemsViewSet(viewsets.ModelViewSet):
-    queryset = CartItem.objects.all()
-    serializer_class = CartitemsSerializer
-    permission_classes = [IsAuthenticated]
-
-
 def change_count_view(request):
     count = request.POST["count"]
     id = request.POST["id"]

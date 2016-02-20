@@ -8,9 +8,14 @@ var Cookies = require('js-cookie');
 
 var Store = merge(MicroEvent.prototype, {
 
+    menu_items: [],
+    menuItemsChange(){
+        this.trigger('menuItemsChange')
+    },
+
     products: [],
     productsChange: function(){
-        console.log('trigger done');
+        // console.log('trigger done');
         this.trigger('productsChange');
     },
 
@@ -26,10 +31,28 @@ var Store = merge(MicroEvent.prototype, {
     }
 });
 
+
 Dispatcher.register(function (payload){
     switch (payload.actionType){
+        case 'get-menuitems':
+            console.log('get menu items start')
+            $.ajax({
+                url: '/api/menuitems/',
+                dataType: 'json',
+                cache: false,
+                success: (function(data){
+                    console.log("get menu item data:", data);
+                    Store.menu_items = data;
+                    Store.menuItemsChange();
+                }).bind(this),
+                error: (function(){
+                    console.log('ajax_error');
+                }).bind(this)
+            });
+            break;
+
         case 'get-products':
-            console.log('dispatcher done');
+            // console.log('dispatcher done');
 
             // ajax запрос на адрес /api/products/
             $.ajax({
@@ -47,7 +70,7 @@ Dispatcher.register(function (payload){
             break;
 
         case 'get-product':
-            console.log('dispatcher done');
+            // console.log('dispatcher done');
             // ajax запрос на адрес /api/product/1
             $.ajax({
                 url: '/api/products/'+payload.productId,
@@ -71,7 +94,7 @@ Dispatcher.register(function (payload){
                 dataType: 'json',
                 cache: false,
                 success: (function(data){
-                    console.log('Store get-cartitems data: ', data);
+                    // console.log('Store get-cartitems data: ', data);
                     Store.cartitems = data;
                     Store.cartitemsChange();
                 }).bind(this),
@@ -84,7 +107,7 @@ Dispatcher.register(function (payload){
         //добавляем товар в корзину
         case 'addtocart':
             //отправить POST запрос
-            console.log('addtocart with data: ', payload);
+            // console.log('addtocart with data: ', payload);
             var csrftoken = Cookies.get('csrftoken');
             $.post(
                 '/addtocart/',
@@ -95,19 +118,19 @@ Dispatcher.register(function (payload){
                 }
             ).success(function(data){                
                 data = data[0];
-                console.log('Store addtocart cartitem: ', data);
+                // console.log('Store addtocart cartitem: ', data);
                 var exist_item = _.find(Store.cartitems, function(item){
                     // если выполняется условие ниже то возвратим текущий item в exist_item
                     return (item.id == data.id && item.cart_id == data.cart_id);
                 });
 
                 if (exist_item){
-                    console.log('exist_item true: ', exist_item);
+                    // console.log('exist_item true: ', exist_item);
                     exist_item.count = data.count;
                 } else {
-                    console.log('Store.cartitems befor: ', Store.cartitems);                    
+                    // console.log('Store.cartitems befor: ', Store.cartitems);                    
                     Store.cartitems.push(data);
-                    console.log('Store.cartitems after: ', Store.cartitems);
+                    // console.log('Store.cartitems after: ', Store.cartitems);
                 }
 
                 Store.cartitemsChange();
@@ -146,7 +169,7 @@ Dispatcher.register(function (payload){
                 }
             });
             Store.cartitemsChange();
-            console.log('change count', payload.statecount, payload.item.id);
+            // console.log('change count', payload.statecount, payload.item.id);
             $.post(
                 '/change-count/',
                 {

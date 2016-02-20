@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'core',
+    'menu',
     'mptt',
     'sitetree',
     'core.cart',

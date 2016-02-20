@@ -24,7 +24,7 @@ var App = React.createClass({
     },
     getProducts: function() {
         Actions.getCartitems();
-        console.log('getProducts done +ss');
+        // console.log('getProducts done +ss');
         this.setState({
             products: Store.products
         });

@@ -13,7 +13,7 @@ var Product = React.createClass({
     },
     componentWillMount: function() {
         if (this.props.params) {
-            console.log('ProductView componentDidMount : ', this.props.params.productId);
+            // console.log('ProductView componentDidMount : ', this.props.params.productId);
             var productId = this.props.params.productId;
             Actions.getProduct(productId);
         } else {
@@ -27,7 +27,7 @@ var Product = React.createClass({
         Store.unbind('productTrigger', this.setProduct);
     },
     setProduct: function() {
-        console.log('ProductView Store.product :', Store.product);
+        // console.log('ProductView Store.product :', Store.product);
         this.setState({
             product: Store.product
         });

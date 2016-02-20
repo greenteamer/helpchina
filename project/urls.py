@@ -5,11 +5,13 @@ from django.conf import settings
 
 
 
-from core.views import ProductViewSet, CartitemsViewSet
+from core.view_sets import ProductViewSet, CartitemsViewSet, MenuItemsViewSet
 
 router = routers.DefaultRouter()
 router.register(r'api/products', ProductViewSet)
 router.register(r'api/cartitems', CartitemsViewSet)
+router.register(r'api/menuitems', MenuItemsViewSet)
+
 
 urlpatterns = [
     # Examples:

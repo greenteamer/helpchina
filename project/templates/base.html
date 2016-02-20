@@ -2,87 +2,71 @@
 {% load header_tags %}
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <meta name="author"  content="Kamleshyadav"/>
-        <meta name="MobileOptimized" content="320">
-        <!-- main css -->
-        <link rel="stylesheet" href="{% static "helpchina/css/style.css" %}" media="screen"/>
-        <link rel="stylesheet" href="{% static "helpchina/css/bootstrap.css" %}" media="screen"/>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		<meta name="author"  content="Kamleshyadav"/>
+		<meta name="MobileOptimized" content="320">
+		<!-- main css -->
+		<link rel="stylesheet" href="{% static "helpchina/css/style.css" %}" media="screen"/>
+		<link rel="stylesheet" href="{% static "helpchina/css/bootstrap.css" %}" media="screen"/>
 {#        material#}
-        <link rel="stylesheet" href="{% static "helpchina/material/dist/css/material.css" %}" media="screen"/>
-        <link rel="stylesheet" href="{% static "helpchina/material/dist/css/ripples.css" %}" media="screen"/>
+		<link rel="stylesheet" href="{% static "helpchina/material/dist/css/material.css" %}" media="screen"/>
+		<link rel="stylesheet" href="{% static "helpchina/material/dist/css/ripples.css" %}" media="screen"/>
 
-        <!--подключаем библиотеку aletify include the core styles -->
-        <link rel="stylesheet" href="/static/node_modules/alertify/themes/alertify.core.css" />
-        <!-- include a theme, can be included into the core instead of 2 separate files -->
-        <link rel="stylesheet" href="/static/node_modules/alertify/themes/alertify.default.css" />
-    
-        <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400italic,400,700,300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-        {% block head %}
-            <title>Главная | товары народной медицины helpchina.ru</title>
-            <meta name="description"  content="Магазин товаров народной медецины helpchina.ru. Бобровая струя, медвежий жир и другие товары у нас."/>
-        {% endblock %}
-        {% block page_css %}
-        {% endblock %}
-    </head>
-        <body>
+		<!--подключаем библиотеку aletify include the core styles -->
+		<link rel="stylesheet" href="/static/node_modules/alertify/themes/alertify.core.css" />
+		<!-- include a theme, can be included into the core instead of 2 separate files -->
+		<link rel="stylesheet" href="/static/node_modules/alertify/themes/alertify.default.css" />
 
-             <div class="container">
-                <div class="row">
+		<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400italic,400,700,300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+		{% block head %}
+				<title>Главная | товары народной медицины helpchina.ru</title>
+				<meta name="description"  content="Магазин товаров народной медецины helpchina.ru. Бобровая струя, медвежий жир и другие товары у нас."/>
+		{% endblock %}
+		{% block page_css %}
+		{% endblock %}
+	</head>
+	<body>
 
-                    {% block header %}
-                        {% top_menu request %}
-                    {% endblock %}
+		<div class="container">
+			<div class="row">
 
-{#                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 sidebar">#}
-{#                        <h2>Список Категорий</h2>#}
-{#                        <ul>#}
-{#                            {% category request %}#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">#}
-{#                        <div class="row">#}
-{#                            {% block content %}#}
-{#                            {% endblock %}#}
-{#                        </div>#}
-{#                    </div>#}
+				<div class="col-xs-12">
+					{% block site %}
+						<div id="site"></div>
+					{% endblock %}
+				</div>
 
-                    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
-                        {% block content %}
-                        {% endblock %}
-                    </div>
-
-                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        <div id="cartitems"></div>
-                        {% block sidebar %}
-                        {% endblock %}
-                     </div>
-                </div>
-            </div>
+				<!-- <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+					<div id="cartitems"></div>
+					{% block sidebar %}
+					{% endblock %}
+				</div> -->
+			</div>
+		</div>
 
 
-        <script type="text/javascript" src="{% static "helpchina/js/jquery-1.11.1.js" %}"></script>
-        <script type="text/javascript" src="{% static "helpchina/js/jquery-validation-1/dist/jquery.validate.min.js" %}"></script>
-        <script type="text/javascript" src="{% static "helpchina/js/jquery-validation-1/dist/localization/messages_ru.min.js" %}"></script>
-        <script type="text/javascript" src="{% static "helpchina/js/bootstrap.js" %}"></script>
+		<script type="text/javascript" src="{% static "helpchina/js/jquery-1.11.1.js" %}"></script>
+		<script type="text/javascript" src="{% static "helpchina/js/jquery-validation-1/dist/jquery.validate.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "helpchina/js/jquery-validation-1/dist/localization/messages_ru.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "helpchina/js/bootstrap.js" %}"></script>
 
 {#            material#}
-            <script type="text/javascript" src="{% static "helpchina/material/dist/js/material.js" %}"></script>
-            <script type="text/javascript" src="{% static "helpchina/material/dist/js/ripples.js" %}"></script>
-            <script>$('.dropdown-toggle').dropdown();</script>
-            <script>$.material.init()</script>
+		<script type="text/javascript" src="{% static "helpchina/material/dist/js/material.js" %}"></script>
+		<script type="text/javascript" src="{% static "helpchina/material/dist/js/ripples.js" %}"></script>
+		<script>$('.dropdown-toggle').dropdown();</script>
+		<script>$.material.init()</script>
 
 {#            alertify#}
-            <script type="text/javascript" src="{% static "app/lib/alertify/lib/alertify.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "app/lib/alertify/lib/alertify.min.js" %}"></script>
 
-            <script type="text/javascript" src="{% static "app/bundle.js" %}"></script>
-        {% block page_js %}
+		<script type="text/javascript" src="{% static "app/bundle.js" %}"></script>
+		{% block page_js %}
 
-        {% endblock %}
-        </body>
+		{% endblock %}
+	</body>
 </html>

@@ -2,7 +2,14 @@
 from rest_framework import serializers
 from core.models import Product, ProductImage
 from core.cart.models import CartItem
+from menu.models import MenuItem
 import json
+
+
+class MenuItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuItem
+        fields = ('id', 'name', 'url', 'parent')
 
 
 class ImageSerializer(serializers.ModelSerializer):

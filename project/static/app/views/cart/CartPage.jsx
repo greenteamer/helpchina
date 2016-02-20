@@ -16,7 +16,7 @@ var CartItemCount = React.createClass({
         var item = this.props.item;
         var statecount = this.state.count + 1;
         Actions.setCount(statecount, item);
-        console.log("+1", statecount);
+        // console.log("+1", statecount);
         this.setState({
             count : statecount
         });
@@ -67,7 +67,7 @@ var CartPage = React.createClass({
         Store.unbind('cartitemsChange', this.getCartitems);
     },
     getCartitems : function(){
-        console.log('getCartitems fun component : ', Store.cartitems);
+        // console.log('getCartitems fun component : ', Store.cartitems);
         this.setState({
             cartitems: Store.cartitems
         });
@@ -87,10 +87,10 @@ var CartPage = React.createClass({
 
 
     render: function(){
-        console.log('render component befor after: ', this.state.cartitems);
+        // console.log('render component befor after: ', this.state.cartitems);
         var state_items = this.state.cartitems;
         var self = this;
-        console.log('render component befor after: ', this.state.cartitems);
+        // console.log('render component befor after: ', this.state.cartitems);
         var items = _.map(state_items, function(item){
             var price = item.count*item.product.price;
             return (
@@ -112,7 +112,7 @@ var CartPage = React.createClass({
             );
         });
 
-        console.log('items var: ', items);
+        // console.log('items var: ', items);
 
         return (
             <div className="test123">

@@ -1,14 +1,4 @@
 {% load sitetree %}
-{#<ul class="nav nav-pills nav-main" id="mainMenu">#}
-{#    {% for item in sitetree_items %}#}
-{#	<li class="dropdown">#}
-{#        <a class="dropdown-toggle" href="{% sitetree_url for item %}" {% if item.hint %}title="{{ item.hint }}"{% endif %} {% if item.is_current or item.in_current_branch %}class="{{ item.is_current|yesno:"current_item ," }}{{ item.in_current_branch|yesno:"current_branch," }}"{% endif %}>{{ item.title_resolved }}</a>#}
-{#		{% if item.has_children %}#}
-{#			{% sitetree_children of item for menu template "sitetree/menu_dropdown.html" %}#}
-{#		{% endif %}#}
-{#	</li>#}
-{#	{% endfor %}#}
-{#</ul>#}
 
 <nav id="navbar-example" class="navbar  navbar-default navbar-static" role="navigation">
       <div class="container-fluid">
@@ -16,8 +6,7 @@
           <ul class="nav navbar-nav">
 
               {% for item in sitetree_items %}
-{#                  <a href="">text</a>#}
-{#                  <p>hello</p>#}
+
                 <li class="dropdown">
 
                     {% if item.has_children %}
@@ -26,15 +15,6 @@
                     {% else %}
                         <a href="{% sitetree_url for item %}" role="menuitem" tabindex="-1">{{ item.title_resolved }} </a>
                     {% endif %}
-{#                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">#}
-{#                        <li role="presentation">#}
-{#                            <a role="menuitem" tabindex="-1" href="http://bootstrap-ru.ru" target="_blank">Действие</a>#}
-{#                        </li>#}
-{#                        <li role="presentation" class="divider"></li>#}
-{#                        <li role="presentation">#}
-{#                            <a role="menuitem" tabindex="-1" href="http://bootstrap-ru.ru" target="_blank">Отдельная ссылка</a>#}
-{#                        </li>#}
-{#                    </ul>#}
                 </li>
 
               {% endfor %}

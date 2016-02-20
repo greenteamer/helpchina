@@ -15,55 +15,27 @@ var CartItems = require('./views/cart/CartBar.jsx');
 var CartBox = require('./views/cart/CartPage.jsx');
 var Confirm = require('./views/order/Confirm.jsx');
 var Account = require('./views/Account/Account.jsx');
+var Menu = require('./views/menu/MenuView.jsx');
 
 
 const App = React.createClass({
   render() {
     return (
-      <div>
-        <h1>App</h1>
-        <ul>
-          <li><Link to="/cart">cart</Link></li>
-          <li><IndexLink to="/">Home</IndexLink></li>
-        </ul>
-        {this.props.children || <Products/>}
+      <div className="row">
+        <Menu/>
+        <div className="col-xs-12 col-md-8"> 
+          {this.props.children || <Products/>}
+        </div>
+        <div className="col-xs-12 col-md-4">
+          <div id="cartitems">
+            <CartItems />
+          </div>
+        </div>
       </div>
     )
   }
 })
 
-const About = React.createClass({
-  render() {
-    return <h3>About</h3>
-  }
-})
-
-const Inbox = React.createClass({
-  render() {
-    return (
-      <div>
-        <h2>Inbox</h2>
-        {this.props.children || "Welcome to your Inbox"}
-      </div>
-    )
-  }
-})
-
-const Message = React.createClass({
-  render() {
-    return <h3>Message {this.props.params.id}</h3>
-  }
-})
-
-
-// routes = (
-//     <Route path="/" component={App}>
-//       <Route path="about" component={About} />
-//       <Route path="inbox" component={Inbox}>
-//         <Route path="messages/:id" component={Message} />
-//       </Route>
-//     </Route>
-// )
 
 var routes = (
   <Route path="/" component={App}>
@@ -78,7 +50,7 @@ var routes = (
 
 render(
   <Router history={browserHistory} routes={routes}/>
-, document.getElementById('products'))
+, document.getElementById('site'))
 
 
-render(<CartItems />, document.getElementById('cartitems'));
+// render(<CartItems />, document.getElementById('cartitems'));

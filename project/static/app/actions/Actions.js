@@ -1,14 +1,19 @@
 var Dispatcher = require('../dispatcher/Dispatcher.js');
 
 var Actions = {
+    getMenuItems(){
+        Dispatcher.dispatch({
+            actionType: 'get-menuitems'
+        });
+    },
     getProducts: function (){
-        console.log('getProducts action');
+        // console.log('getProducts action');
         Dispatcher.dispatch({
             actionType: 'get-products'
         });
     },
     addtocart : function(count,id){
-        console.log('addtocart', count, id);
+        // console.log('addtocart', count, id);
         Dispatcher.dispatch({
             actionType: 'addtocart',
             count: count,
@@ -24,7 +29,7 @@ var Actions = {
     },
 
     getCartitems: function (){
-        console.log('getCartitems action');
+        // console.log('getCartitems action');
         Dispatcher.dispatch({
             actionType: 'get-cartitems'
         });
