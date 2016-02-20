@@ -1,7 +1,8 @@
 var React = require('react');
-var Actions = require('../actions/Actions.js');
-var Store = require('../store/Store.js');
+var Actions = require('../../actions/Actions.js');
+var Store = require('../../store/Store.js');
 var _ = require('underscore');
+var Confirm = require('../order/Confirm.jsx');
 
 
 var CartItemCount = React.createClass({
@@ -52,7 +53,7 @@ var CartItemCount = React.createClass({
 });
 
 
-var CartBox = React.createClass({
+var CartPage = React.createClass({
     getInitialState : function(){
         return {
             cartitems: []
@@ -66,6 +67,7 @@ var CartBox = React.createClass({
         Store.unbind('cartitemsChange', this.getCartitems);
     },
     getCartitems : function(){
+        console.log('getCartitems fun component : ', Store.cartitems);
         this.setState({
             cartitems: Store.cartitems
         });
@@ -85,8 +87,10 @@ var CartBox = React.createClass({
 
 
     render: function(){
+        console.log('render component befor after: ', this.state.cartitems);
         var state_items = this.state.cartitems;
         var self = this;
+        console.log('render component befor after: ', this.state.cartitems);
         var items = _.map(state_items, function(item){
             var price = item.count*item.product.price;
             return (
@@ -132,9 +136,10 @@ var CartBox = React.createClass({
                  <a href="/#/confirm" className="btn btn-primary btn-sm">
                         Оформить заказ
                  </a>
+                <Confirm/>
             </div>
         )
     }
 });
 
-module.exports = CartBox;
+module.exports = CartPage;

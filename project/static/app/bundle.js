@@ -17,7 +17,7 @@ var Actions = {
         });
     },
     deleteCartitem : function(id){
-        console.log('удаляю ',id);
+        // console.log('удаляю ',id);
         Dispatcher.dispatch({
             actionType: 'deleteCartitem',
             id: id
@@ -74,8 +74,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Products = require('./views/AppView.jsx');
 var Product = require('./views/ProductView.jsx');
-var CartItems = require('./views/cart/Cart.jsx');
-var CartBox = require('./views/CartBox.jsx');
+var CartItems = require('./views/cart/CartBar.jsx');
+var CartBox = require('./views/cart/CartPage.jsx');
 var Confirm = require('./views/order/Confirm.jsx');
 var Account = require('./views/Account/Account.jsx');
 
@@ -116,7 +116,7 @@ Router.run(routes, Router.HashLocation, function(Route){
 
 ReactDOM.render(React.createElement(CartItems, null), document.getElementById('cartitems'));
 
-},{"./views/Account/Account.jsx":6,"./views/AppView.jsx":8,"./views/CartBox.jsx":9,"./views/ProductView.jsx":10,"./views/cart/Cart.jsx":12,"./views/order/Confirm.jsx":13,"react":220,"react-dom":22,"react-router":47}],5:[function(require,module,exports){
+},{"./views/Account/Account.jsx":6,"./views/AppView.jsx":8,"./views/ProductView.jsx":9,"./views/cart/CartBar.jsx":11,"./views/cart/CartPage.jsx":12,"./views/order/Confirm.jsx":13,"react":220,"react-dom":22,"react-router":47}],5:[function(require,module,exports){
 var Dispatcher = require('../dispatcher/Dispatcher.js');
 var MicroEvent = require('microevent');
 var merge = require('merge');
@@ -190,6 +190,7 @@ Dispatcher.register(function (payload){
                 dataType: 'json',
                 cache: false,
                 success: (function(data){
+                    console.log('Store get-cartitems data: ', data);
                     Store.cartitems = data;
                     Store.cartitemsChange();
                 }).bind(this),
@@ -202,7 +203,7 @@ Dispatcher.register(function (payload){
         //добавляем товар в корзину
         case 'addtocart':
             //отправить POST запрос
-            console.log('addtocart');
+            console.log('addtocart with data: ', payload);
             var csrftoken = Cookies.get('csrftoken');
             $.post(
                 '/addtocart/',
@@ -211,17 +212,21 @@ Dispatcher.register(function (payload){
                     id : payload.id,
                     count : payload.count
                 }
-            ).success(function(data){
+            ).success(function(data){                
+                data = data[0];
                 console.log('Store addtocart cartitem: ', data);
-
                 var exist_item = _.find(Store.cartitems, function(item){
                     // если выполняется условие ниже то возвратим текущий item в exist_item
                     return (item.id == data.id && item.cart_id == data.cart_id);
                 });
+
                 if (exist_item){
+                    console.log('exist_item true: ', exist_item);
                     exist_item.count = data.count;
                 } else {
+                    console.log('Store.cartitems befor: ', Store.cartitems);                    
                     Store.cartitems.push(data);
+                    console.log('Store.cartitems after: ', Store.cartitems);
                 }
 
                 Store.cartitemsChange();
@@ -245,7 +250,8 @@ Dispatcher.register(function (payload){
                     csrfmiddlewaretoken: csrftoken
                 },
                 success: function(response) {
-                    alert('успех');
+                    // alert('успех');
+                    console.log('success delete cartitem data: ', response);
                 }
             });
             break;
@@ -376,7 +382,7 @@ var ReactDOM = require('react-dom');
 var Actions = require('../actions/Actions.js');
 var Store = require('../store/Store.js');
 var Products = require('./ProductsView.jsx');
-var CartItems = require('./cart/Cart.jsx');
+var CartItems = require('./cart/CartBar.jsx');
 
 var App = React.createClass({displayName: "App",
     getInitialState: function () {
@@ -414,149 +420,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"../actions/Actions.js":1,"../store/Store.js":5,"./ProductsView.jsx":11,"./cart/Cart.jsx":12,"react":220,"react-dom":22}],9:[function(require,module,exports){
-var React = require('react');
-var Actions = require('../actions/Actions.js');
-var Store = require('../store/Store.js');
-var _ = require('underscore');
-
-
-var CartItemCount = React.createClass({displayName: "CartItemCount",
-    getInitialState : function(){
-        return {
-          count : this.props.item.count
-        }
-    },
-
-    plusCount : function() {
-        var item = this.props.item;
-        var statecount = this.state.count + 1;
-        Actions.setCount(statecount, item);
-        console.log("+1", statecount);
-        this.setState({
-            count : statecount
-        });
-    },
-    minusCount : function(){
-        var item = this.props.item;
-        if(this.state.count > 1 ){
-            var statecount =  this.state.count - 1;
-            Actions.setCount(statecount, item);
-            this.setState({
-                count : statecount
-            });
-        }
-    },
-    changeCount : function(e){
-        e.preventDefault();
-        var item = this.props.item;
-        var statecount =  e.target.value;
-        Actions.setCount(statecount, item);
-        this.setState({
-            count : statecount
-        });
-
-    },
-    render : function(){
-        return (
-            React.createElement("div", null, 
-                React.createElement("button", {onClick: this.minusCount, className: "btn btn-primary", type: "button"}, " - "), 
-                React.createElement("input", {onChange: this.changeCount, type: "text", value: this.state.count}), 
-                React.createElement("button", {onClick: this.plusCount, className: "btn btn-primary", type: "button"}, " + ")
-            )
-        )
-    }
-});
-
-
-var CartBox = React.createClass({displayName: "CartBox",
-    getInitialState : function(){
-        return {
-            cartitems: []
-        }
-    },
-    componentWillMount: function(){
-        Actions.getCartitems();
-        Store.bind('cartitemsChange', this.getCartitems);
-    },
-    componentWillUnmount : function(){
-        Store.unbind('cartitemsChange', this.getCartitems);
-    },
-    getCartitems : function(){
-        this.setState({
-            cartitems: Store.cartitems
-        });
-    },
-
-    clickDelete : function(e){
-        e.preventDefault();
-        var id = e.target.id;
-        Actions.deleteCartitem(id);
-        var newCartitems = _.filter(this.state.cartitems, function(item){
-            return item.id != id;
-        });
-        this.setState({
-            cartitems: newCartitems
-        });
-    },
-
-
-    render: function(){
-        var state_items = this.state.cartitems;
-        var self = this;
-        var items = _.map(state_items, function(item){
-            var price = item.count*item.product.price;
-            return (
-                React.createElement("tr", {key: item.id}, 
-                    React.createElement("td", null, item.id), 
-                    React.createElement("td", null, item.product.name), 
-                    React.createElement("td", null, React.createElement(CartItemCount, {item: item})), 
-                    React.createElement("td", null, item.product.price), 
-                    React.createElement("td", null, price), 
-                    React.createElement("td", null, 
-                        React.createElement("button", {
-                            "data-id": item.id, 
-                            id: item.id, 
-                            ref: "deletebutton", 
-                            onClick: self.clickDelete, 
-                            className: "btn btn-primary btn-sm"}, "Удалить")
-                    )
-                )
-            );
-        });
-
-        console.log('items var: ', items);
-
-        return (
-            React.createElement("div", {className: "test123"}, 
-                React.createElement("div", {className: "table-responsive"}, 
-                  React.createElement("table", {className: "table table-bordered"}, 
-                    React.createElement("thead", null, 
-                      React.createElement("tr", null, 
-                        React.createElement("th", null, "№"), 
-                        React.createElement("th", null, "Название товара"), 
-                        React.createElement("th", null, "Количество"), 
-                        React.createElement("th", null, "Цена"), 
-                        React.createElement("th", null, "Стоимость"), 
-                          React.createElement("th", null)
-                      )
-                    ), 
-                    React.createElement("tbody", null, 
-                        items
-                    )
-                  )
-                ), 
-                 React.createElement("a", {href: "/#/confirm", className: "btn btn-primary btn-sm"}, 
-                        "Оформить заказ"
-                 )
-            )
-        )
-    }
-});
-
-module.exports = CartBox;
-
-},{"../actions/Actions.js":1,"../store/Store.js":5,"react":220,"underscore":221}],10:[function(require,module,exports){
+},{"../actions/Actions.js":1,"../store/Store.js":5,"./ProductsView.jsx":10,"./cart/CartBar.jsx":11,"react":220,"react-dom":22}],9:[function(require,module,exports){
 var React = require('react');
 var Actions = require('../actions/Actions.js');
 var Store = require('../store/Store.js');
@@ -624,7 +488,7 @@ var Product = React.createClass({displayName: "Product",
 
 module.exports = Product;
 
-},{"../actions/Actions.js":1,"../store/Store.js":5,"./Addtocart.jsx":7,"react":220}],11:[function(require,module,exports){
+},{"../actions/Actions.js":1,"../store/Store.js":5,"./Addtocart.jsx":7,"react":220}],10:[function(require,module,exports){
 var React = require('react');
 var Product =  require('./ProductView.jsx');
 
@@ -643,7 +507,7 @@ var Products = React.createClass({displayName: "Products",
 
 module.exports = Products;
 
-},{"./ProductView.jsx":10,"react":220}],12:[function(require,module,exports){
+},{"./ProductView.jsx":9,"react":220}],11:[function(require,module,exports){
 var React = require('react');
 var Store = require('../../store/Store.js');
 var Actions = require('../../actions/Actions.js');
@@ -652,6 +516,7 @@ var Actions = require('../../actions/Actions.js');
 var CartItem = React.createClass({displayName: "CartItem",
     render : function(){
         var link = "/#/product/" + this.props.cartitem.product.id;
+        
         return(
             React.createElement("div", {className: "cartitem"}, 
                 React.createElement("img", {className: "cart_item_image", src: this.props.cartitem.product.product_images[0].image}), 
@@ -678,8 +543,7 @@ var CartItems = React.createClass({displayName: "CartItems",
     componentWillUnmount:function(){
         Store.unbind('cartitemsChange', this.getCaritems);
     },
-    getCaritems: function(){
-        console.log('getCartitems');
+    getCaritems: function(){        
         console.log('getCartItem func', Store.cartitems);
         this.setState({
             cartitems: Store.cartitems
@@ -724,7 +588,154 @@ var CartItems = React.createClass({displayName: "CartItems",
 
 module.exports = CartItems;
 
-},{"../../actions/Actions.js":1,"../../store/Store.js":5,"react":220}],13:[function(require,module,exports){
+},{"../../actions/Actions.js":1,"../../store/Store.js":5,"react":220}],12:[function(require,module,exports){
+var React = require('react');
+var Actions = require('../../actions/Actions.js');
+var Store = require('../../store/Store.js');
+var _ = require('underscore');
+var Confirm = require('../order/Confirm.jsx');
+
+
+var CartItemCount = React.createClass({displayName: "CartItemCount",
+    getInitialState : function(){
+        return {
+          count : this.props.item.count
+        }
+    },
+
+    plusCount : function() {
+        var item = this.props.item;
+        var statecount = this.state.count + 1;
+        Actions.setCount(statecount, item);
+        console.log("+1", statecount);
+        this.setState({
+            count : statecount
+        });
+    },
+    minusCount : function(){
+        var item = this.props.item;
+        if(this.state.count > 1 ){
+            var statecount =  this.state.count - 1;
+            Actions.setCount(statecount, item);
+            this.setState({
+                count : statecount
+            });
+        }
+    },
+    changeCount : function(e){
+        e.preventDefault();
+        var item = this.props.item;
+        var statecount =  e.target.value;
+        Actions.setCount(statecount, item);
+        this.setState({
+            count : statecount
+        });
+
+    },
+    render : function(){
+        return (
+            React.createElement("div", null, 
+                React.createElement("button", {onClick: this.minusCount, className: "btn btn-primary", type: "button"}, " - "), 
+                React.createElement("input", {onChange: this.changeCount, type: "text", value: this.state.count}), 
+                React.createElement("button", {onClick: this.plusCount, className: "btn btn-primary", type: "button"}, " + ")
+            )
+        )
+    }
+});
+
+
+var CartPage = React.createClass({displayName: "CartPage",
+    getInitialState : function(){
+        return {
+            cartitems: []
+        }
+    },
+    componentWillMount: function(){
+        Actions.getCartitems();
+        Store.bind('cartitemsChange', this.getCartitems);
+    },
+    componentWillUnmount : function(){
+        Store.unbind('cartitemsChange', this.getCartitems);
+    },
+    getCartitems : function(){
+        console.log('getCartitems fun component : ', Store.cartitems);
+        this.setState({
+            cartitems: Store.cartitems
+        });
+    },
+
+    clickDelete : function(e){
+        e.preventDefault();
+        var id = e.target.id;
+        Actions.deleteCartitem(id);
+        var newCartitems = _.filter(this.state.cartitems, function(item){
+            return item.id != id;
+        });
+        this.setState({
+            cartitems: newCartitems
+        });
+    },
+
+
+    render: function(){
+        console.log('render component befor after: ', this.state.cartitems);
+        var state_items = this.state.cartitems;
+        var self = this;
+        console.log('render component befor after: ', this.state.cartitems);
+        var items = _.map(state_items, function(item){
+            var price = item.count*item.product.price;
+            return (
+                React.createElement("tr", {key: item.id}, 
+                    React.createElement("td", null, item.id), 
+                    React.createElement("td", null, item.product.name), 
+                    React.createElement("td", null, React.createElement(CartItemCount, {item: item})), 
+                    React.createElement("td", null, item.product.price), 
+                    React.createElement("td", null, price), 
+                    React.createElement("td", null, 
+                        React.createElement("button", {
+                            "data-id": item.id, 
+                            id: item.id, 
+                            ref: "deletebutton", 
+                            onClick: self.clickDelete, 
+                            className: "btn btn-primary btn-sm"}, "Удалить")
+                    )
+                )
+            );
+        });
+
+        console.log('items var: ', items);
+
+        return (
+            React.createElement("div", {className: "test123"}, 
+                React.createElement("div", {className: "table-responsive"}, 
+                  React.createElement("table", {className: "table table-bordered"}, 
+                    React.createElement("thead", null, 
+                      React.createElement("tr", null, 
+                        React.createElement("th", null, "№"), 
+                        React.createElement("th", null, "Название товара"), 
+                        React.createElement("th", null, "Количество"), 
+                        React.createElement("th", null, "Цена"), 
+                        React.createElement("th", null, "Стоимость"), 
+                          React.createElement("th", null)
+                      )
+                    ), 
+                    React.createElement("tbody", null, 
+                        items
+                    )
+                  )
+                ), 
+                 React.createElement("a", {href: "/#/confirm", className: "btn btn-primary btn-sm"}, 
+                        "Оформить заказ"
+                 ), 
+                React.createElement(Confirm, null)
+            )
+        )
+    }
+});
+
+module.exports = CartPage;
+
+},{"../../actions/Actions.js":1,"../../store/Store.js":5,"../order/Confirm.jsx":13,"react":220,"underscore":221}],13:[function(require,module,exports){
 var React = require('react');
 var Actions = require('../../actions/Actions.js');
 var Alertify = require('../../lib/alertify/lib/alertify.min.js');

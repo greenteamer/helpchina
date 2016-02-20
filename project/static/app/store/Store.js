@@ -71,6 +71,7 @@ Dispatcher.register(function (payload){
                 dataType: 'json',
                 cache: false,
                 success: (function(data){
+                    console.log('Store get-cartitems data: ', data);
                     Store.cartitems = data;
                     Store.cartitemsChange();
                 }).bind(this),
@@ -83,7 +84,7 @@ Dispatcher.register(function (payload){
         //добавляем товар в корзину
         case 'addtocart':
             //отправить POST запрос
-            console.log('addtocart');
+            console.log('addtocart with data: ', payload);
             var csrftoken = Cookies.get('csrftoken');
             $.post(
                 '/addtocart/',
@@ -92,17 +93,21 @@ Dispatcher.register(function (payload){
                     id : payload.id,
                     count : payload.count
                 }
-            ).success(function(data){
+            ).success(function(data){                
+                data = data[0];
                 console.log('Store addtocart cartitem: ', data);
-
                 var exist_item = _.find(Store.cartitems, function(item){
                     // если выполняется условие ниже то возвратим текущий item в exist_item
                     return (item.id == data.id && item.cart_id == data.cart_id);
                 });
+
                 if (exist_item){
+                    console.log('exist_item true: ', exist_item);
                     exist_item.count = data.count;
                 } else {
+                    console.log('Store.cartitems befor: ', Store.cartitems);                    
                     Store.cartitems.push(data);
+                    console.log('Store.cartitems after: ', Store.cartitems);
                 }
 
                 Store.cartitemsChange();
@@ -126,7 +131,8 @@ Dispatcher.register(function (payload){
                     csrfmiddlewaretoken: csrftoken
                 },
                 success: function(response) {
-                    alert('успех');
+                    // alert('успех');
+                    console.log('success delete cartitem data: ', response);
                 }
             });
             break;
