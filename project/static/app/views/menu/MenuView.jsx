@@ -23,7 +23,7 @@ var MenuView = React.createClass({
     },
 
     getMenu(){
-        console.log("menu component getMenu start");
+        // console.log("menu component getMenu start");
         this.setState({
             menu_items: Store.menu_items
         })
@@ -32,7 +32,7 @@ var MenuView = React.createClass({
     render(){
         var items = this.state.menu_items.map(function(item){
             return(
-                <li>
+                <li key={item.id}>
                     <Link to={item.url}>{item.name}</Link>
                 </li>
             )

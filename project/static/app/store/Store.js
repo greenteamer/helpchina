@@ -35,13 +35,13 @@ var Store = merge(MicroEvent.prototype, {
 Dispatcher.register(function (payload){
     switch (payload.actionType){
         case 'get-menuitems':
-            console.log('get menu items start')
+            // console.log('get menu items start')
             $.ajax({
                 url: '/api/menuitems/',
                 dataType: 'json',
                 cache: false,
                 success: (function(data){
-                    console.log("get menu item data:", data);
+                    // console.log("get menu item data:", data);
                     Store.menu_items = data;
                     Store.menuItemsChange();
                 }).bind(this),

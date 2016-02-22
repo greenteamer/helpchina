@@ -1,59 +1,37 @@
 var React = require('react');
-var Actions = require('../actions/Actions.js');
-var Store = require('../store/Store.js');
-var AddToCart = require('./Addtocart.jsx');
-
+var Reflux = require('reflux');
 var Link = require('react-router').Link;
 
+var ProductActions = require('../actions/ProductActions.js');
+var ProductStore = require('../store/ProductStore.js');
+
+var AddToCart = require('./Addtocart.jsx');
+// var Actions = require('../actions/Actions.js');
+// var Store = require('../store/Store.js');
+
+
 var Product = React.createClass({
-    getInitialState: function () {
-        return {
-            product: {}
-        }
-    },
-    componentWillMount: function() {
-        if (this.props.params) {
-            // console.log('ProductView componentDidMount : ', this.props.params.productId);
-            var productId = this.props.params.productId;
-            Actions.getProduct(productId);
-        } else {
-            this.setState({
-                product: this.props.product
-            });
-        }
-        Store.bind('productTrigger', this.setProduct);
-    },
-    componentWillUnmount: function(){
-        Store.unbind('productTrigger', this.setProduct);
-    },
-    setProduct: function() {
-        // console.log('ProductView Store.product :', Store.product);
-        this.setState({
-            product: Store.product
-        });
-    },
     render : function(){
-        //console.log('this.props.params.productId: ', this.props.params.productId);
-        if (this.state.product.description) {
-            var description = this.state.product.description.slice(0,100);
-            var slug = "/product/"+this.state.product.id;
+        if (this.props.product.description) {
+            var description = this.props.product.description.slice(0,100);
+            var slug = "/product/"+this.props.product.id;
             return(
                 <div className="col-md-4 product">
-                    <a href={slug}><img width="100%" src={this.state.product.product_images[0].image} alt=""/></a>
-                    <h3>{ this.state.product.name }</h3>
+                    <a href={slug}><img width="100%" src={this.props.product.product_images[0].image} alt=""/></a>
+                    <h3>{ this.props.product.name }</h3>
                     <p className="description_product">{ description }</p>
                     <p>
                         <Link to={slug}>подробнее о товаре</Link>
                     </p>
                     <p>
                         <i className="fa fa-chevron-down"></i>
-                        ЦЕНА : <b>{ this.state.product.price }</b> рублей
+                        ЦЕНА : <b>{ this.props.product.price }</b> рублей
                     </p>
                     <p>
                         <i className="fa fa-chevron-down"></i>
-                        ВЕС: {this.state.product.weight} килограмм
+                        ВЕС: {this.props.product.weight} килограмм
                     </p>
-                    <AddToCart product_id={this.state.product.id}/>
+                    <AddToCart product_id={this.props.product.id}/>
                 </div>
             )
         } else {
@@ -64,5 +42,6 @@ var Product = React.createClass({
 
     }
 });
+
 
 module.exports = Product;
