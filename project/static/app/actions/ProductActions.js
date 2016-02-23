@@ -2,7 +2,7 @@ var Reflux = require('reflux');
 
 
 var ProductActions = Reflux.createActions([
-    // "getAllProducts"
+    "getProduct"
 ]);
 
 

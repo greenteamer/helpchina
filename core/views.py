@@ -126,6 +126,7 @@ def getcartitems(request):
 def deletecartitem(request):
 
     id = request.POST['id']
+    # print 'id: %s' % id
     cartitem = CartItem.objects.get(id=id)
     cartitem.delete()
 

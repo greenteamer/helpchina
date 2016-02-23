@@ -1,13 +1,7 @@
 var React = require('react');
-var Reflux = require('reflux');
 var Link = require('react-router').Link;
-
-var ProductActions = require('../actions/ProductActions.js');
-var ProductStore = require('../store/ProductStore.js');
-
 var AddToCart = require('./Addtocart.jsx');
-// var Actions = require('../actions/Actions.js');
-// var Store = require('../store/Store.js');
+// var Product =  require('./ProductView.jsx');
 
 
 var Product = React.createClass({
@@ -44,4 +38,24 @@ var Product = React.createClass({
 });
 
 
-module.exports = Product;
+
+var Products = React.createClass({
+    // mixins: [Reflux.ListenerMixin, Reflux.connect(ProductStore,"products")],
+    // mixins: [Reflux.connect(ProductStore,"products")],
+    
+    render: function(){
+        var items = this.props.products.map(function(product){
+            return(
+                <Product key={product.id} product={product}/>
+            )
+        });
+        return(
+            <div className="row">
+                {items}
+            </div>
+        )
+    }
+});
+
+
+module.exports = Products;

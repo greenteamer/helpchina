@@ -1,12 +1,15 @@
 var React = require('react');
+var Reflux = require('reflux');
 var Actions = require('../../actions/Actions.js');
 var Store = require('../../store/Store.js');
+var CartStore = require('../../store/CartStore.js');
 var _ = require('underscore');
 var Confirm = require('../order/Confirm.jsx');
 
 
 var CartItemCount = React.createClass({
-    getInitialState : function(){
+
+    getInitialState(){
         return {
           count : this.props.item.count
         }
@@ -54,24 +57,7 @@ var CartItemCount = React.createClass({
 
 
 var CartPage = React.createClass({
-    getInitialState : function(){
-        return {
-            cartitems: []
-        }
-    },
-    componentWillMount: function(){
-        Actions.getCartitems();
-        Store.bind('cartitemsChange', this.getCartitems);
-    },
-    componentWillUnmount : function(){
-        Store.unbind('cartitemsChange', this.getCartitems);
-    },
-    getCartitems : function(){
-        // console.log('getCartitems fun component : ', Store.cartitems);
-        this.setState({
-            cartitems: Store.cartitems
-        });
-    },
+    mixins: [Reflux.connect(CartStore,"cartitems")],
 
     clickDelete : function(e){
         e.preventDefault();
