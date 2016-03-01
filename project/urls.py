@@ -5,7 +5,7 @@ from django.conf import settings
 
 
 
-from core.view_sets import ProductViewSet, CartitemsViewSet, MenuItemsViewSet
+from core.view_sets import *
 
 router = routers.DefaultRouter()
 router.register(r'api/products', ProductViewSet)

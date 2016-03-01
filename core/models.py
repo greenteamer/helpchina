@@ -46,7 +46,7 @@ class Product(models.Model):
     def get_absolute_url(self):
         return '/product/' + self.slug
 
-    def get_image(self):
+    def get_first_image(self):
         return ProductImage.objects.filter(product=self)[0]
 
 
@@ -57,7 +57,7 @@ class ProductImage(models.Model):
     def __unicode__(self):
         return self.product.name + "-" + self.image.name
 
-    def get_image(self):
+    def get_image_url(self):
         return "/media/%s/" % self.image
 
     class Meta:

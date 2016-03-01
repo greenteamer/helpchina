@@ -9,7 +9,8 @@ urlpatterns = patterns('core.views',
 
 
 
-    url(r'^$', 'indexView'),
+    # url(r'^$', 'indexView'),
+    url(r'^$', 'indexView'),    
     url(r'^product/(?P<slug>[-\w]+)/$', 'product_view'),
     url(r'^catalog/(?P<slug>[-\w]+)/$', 'catalog_view'),
     url(r'^page/(?P<slug>[-\w]+)/$', 'page_view'),

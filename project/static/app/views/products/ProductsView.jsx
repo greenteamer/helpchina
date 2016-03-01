@@ -44,11 +44,14 @@ var Products = React.createClass({
     // mixins: [Reflux.connect(ProductStore,"products")],
     
     render: function(){
-        var items = this.props.products.map(function(product){
-            return(
-                <Product key={product.id} product={product}/>
-            )
+        var items;
+        if (!this.props.products.length) {
+            return null    
+        }
+        items = this.props.products.map((product) => {
+            return <Product key={product.id} product={product}/>;
         });
+        
         return(
             <div className="row">
                 {items}

@@ -27,9 +27,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class CartitemsSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(many=False, read_only=True)
     class Meta:
         model = CartItem
         fields = ('id', 'product', 'count', 'cart_id')
+
 
 
 def serializeCartItems(cartitems):

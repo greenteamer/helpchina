@@ -22,4 +22,4 @@ class ProductViewSet(viewsets.ModelViewSet):
 class CartitemsViewSet(viewsets.ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartitemsSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
