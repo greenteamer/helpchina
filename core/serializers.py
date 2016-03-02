@@ -45,7 +45,7 @@ def serializeCartItems(cartitems):
         # этого продукта в удобный для json.dumps
         for image in images:
             list_images.append({
-                'image': '%s' % image.get_image()
+                'image': '%s' % image.get_image_url()
             })
         # добавляем в список картитемов объект при каждой итерации
         list.append({

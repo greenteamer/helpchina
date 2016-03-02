@@ -1,8 +1,12 @@
 var React = require('react');
+var Reflux = require('reflux');
+var CartStore = require('../../store/CartStore.js');
+
 var Store = require('../../store/Store.js');
 var Actions = require('../../actions/Actions.js');
 
 var Link = require('react-router').Link;
+var _ = require('underscore');
 
 
 var CartItem = React.createClass({
@@ -22,29 +26,26 @@ var CartItem = React.createClass({
 
 
 var CartItems = React.createClass({
-    getInitialState:function(){
-        return{
-            cartitems : []
-        }
-    },
-    componentWillMount:function(){
-        // console.log('test +');
+    mixins: [Reflux.connect(CartStore,"cartitems")],
+
+    componentWillMount(){
         Actions.getCartitems();
         Store.bind('cartitemsChange', this.getCaritems);
     },
-    componentWillUnmount:function(){
+    componentWillUnmount(){
         Store.unbind('cartitemsChange', this.getCaritems);
     },
-    getCaritems: function(){
-        // console.log('getCartItem func', Store.cartitems);
+    getCaritems(){
         this.setState({
             cartitems: Store.cartitems
         });
     },
-    render: function(){
-        // console.log('test render cartitems', this.state.cartitems);
-
-        var items = this.state.cartitems.map(function(item){
+    render(){
+        var cartitems = this.state.cartitems;
+        if (cartitems == undefined) {
+            cartitems = [];
+        };
+        var items = cartitems.map((item)=>{
             return(
                 <CartItem cartitem={item} key={item.id}/>
             )

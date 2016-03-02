@@ -35,7 +35,6 @@ import os
 
 
 def create_user(username):
-	user = User()
 	user.username = username
 	password = ''
 	characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
@@ -49,6 +48,7 @@ def create_user(username):
 def add_to_cart(request):
 	id = request.POST['id']
 	product = Product.objects.get(id=id)
+	print product
 	cart_id = cart.get_cart_id(request)
 	# parametr_price = request.POST['parametr_price']
 	# parametr = ProductParametr.objects.get(product=product, price=parametr_price)
@@ -65,6 +65,17 @@ def add_to_cart(request):
 		cartItem.cart_id = cart_id
 		cartItem.save()
 		return cartItem
+
+
+def addtocart_view(request):
+	# data = json.dumps({})
+	print "start addtocart_view"
+	cart_item = add_to_cart(request)
+	cart_items = []
+	cart_items.append(cart_item)
+	
+	data = serializeCartItems(cart_items)
+	return HttpResponse(data, content_type="application/json")
 
 
 def indexView(request, template_name="core/index.html"):
@@ -142,15 +153,6 @@ def change_count_view(request):
 	tmp_item.count = count
 	tmp_item.save()
 	data = json.dumps({})
-	return HttpResponse(data, content_type="application/json")
-
-
-def addtocart_view(request):
-	# data = json.dumps({})
-	cart_item = add_to_cart(request)
-	cart_items = []
-	cart_items.append(cart_item)
-	data = serializeCartItems(cart_items)
 	return HttpResponse(data, content_type="application/json")
 
 

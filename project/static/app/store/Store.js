@@ -109,6 +109,7 @@ Dispatcher.register(function (payload){
             //отправить POST запрос
             // console.log('addtocart with data: ', payload);
             var csrftoken = Cookies.get('csrftoken');
+            console.log('csrftoken :', csrftoken);
             $.post(
                 '/addtocart/',
                 {
@@ -134,8 +135,8 @@ Dispatcher.register(function (payload){
                 }
 
                 Store.cartitemsChange();
-            }).error(function(){
-                console.log("error")
+            }).error(function(err){
+                console.log("error: ", err)
             });
 
             //$.(".ajax-submit").onclick("click",function(){
